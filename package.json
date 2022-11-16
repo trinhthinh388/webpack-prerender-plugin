@@ -4,8 +4,10 @@
   "description": "Flexible, framework-agnostic static site generation for sites and SPAs built with webpack.",
   "license": "MIT",
   "main": "index.js",
-  "private": "true",
-  "scripts": {},
+  "scripts": {
+    "renderer": "yarn workspace @webpack-prerender-plugin/renderer",
+    "plugin": "yarn workspace @webpack-prerender-plugin/plguin"
+  },
   "files": [],
   "keywords": [
     "prerender",
@@ -27,8 +29,8 @@
     "url": "https://github.com/trinhthinh388/webpack-prerender-plugin/issues",
     "email": "thinh.duc.trinh@gmail.com"
   },
-  "dependencies": {},
   "devDependencies": {
+    "@types/node": "^18.11.9",
     "ava": "^3.9.0",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^5.3.5",
