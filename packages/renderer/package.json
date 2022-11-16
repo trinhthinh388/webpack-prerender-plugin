@@ -11,6 +11,7 @@
     "test": "jest --collect-coverage"
   },
   "dependencies": {
+    "promise-limit": "^2.7.0",
     "puppeteer": "^19.2.2"
   },
   "devDependencies": {
