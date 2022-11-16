@@ -1,0 +1,47 @@
+{
+  "name": "webpack-prerender-plugin",
+  "version": "0.0.0",
+  "description": "Flexible, framework-agnostic static site generation for sites and SPAs built with webpack.",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {},
+  "files": [],
+  "keywords": [
+    "prerender",
+    "spa",
+    "ssr",
+    "serverside-rendering",
+    "webpack",
+    "react",
+    "vue",
+    "puppeteer"
+  ],
+  "author": {
+    "name": "Thinh Trinh",
+    "email": "thinh.duc.trinh@gmail.com",
+    "url": "https://github.com/trinhthinh388"
+  },
+  "repository": "trinhthinh388/webpack-prerender-plugin",
+  "bugs": {
+    "url": "https://github.com/trinhthinh388/webpack-prerender-plugin/issues",
+    "email": "thinh.duc.trinh@gmail.com"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "ava": "^3.9.0",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^5.3.5",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^1.3.2",
+    "eslint-plugin-standard": "^1.3.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.3"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
