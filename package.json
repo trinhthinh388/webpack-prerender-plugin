@@ -4,6 +4,7 @@
   "description": "Flexible, framework-agnostic static site generation for sites and SPAs built with webpack.",
   "license": "MIT",
   "main": "index.js",
+  "private": "true",
   "scripts": {},
   "files": [],
   "keywords": [
@@ -39,7 +40,8 @@
     "typescript": "^4.9.3"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=16",
+    "npm": "please use yarn"
   },
   "workspaces": [
     "packages/*"
