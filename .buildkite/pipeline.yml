@@ -8,5 +8,4 @@ steps:
           region: 'ap-southeast-1'
       - docker-compose#v3.9.0:
           build: app
-          config: ./infra/docker-compose.yml
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
