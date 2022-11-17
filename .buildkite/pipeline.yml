@@ -8,15 +8,7 @@ steps:
           region: 'ap-southeast-1'
       - docker-compose#v3.9.0:
           build: plugin
+          image-name: webpack-prerender-plugin
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
           cache-from: plugin:014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource:latest
-
-  - label: ':docker: Push latest image to ECR'
-    depends_on: build-image
-    plugins:
-      - ecr#v2.7.0:
-          login: true
-          account_ids: '014222686667'
-          region: 'ap-southeast-1'
-      - docker-compose#v3.9.0:
           push: plugin:014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource:latest
