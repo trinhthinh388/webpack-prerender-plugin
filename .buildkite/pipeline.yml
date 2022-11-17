@@ -1,8 +1,6 @@
 steps:
   - label: ':docker: Docker build'
     key: docker
-    agents:
-      queue: opensource
     plugins:
       - docker-compose#v3.9.0:
           build: app
