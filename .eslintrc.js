@@ -1,11 +1,16 @@
+/* eslint-disable no-undef */
 module.exports = {
-  root: true,
-  parser: 'babel-eslint',
-  // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
-  extends: 'standard',
-  // add your custom rules here
-  'rules': {
-    // allow paren-less arrow functions
-    'arrow-parens': 0
-  }
+  parser: "@typescript-eslint/parser",
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+  ],
+  parserOptions: {
+    ecmaFeatures: {
+    },
+    ecmaVersion: 12,
+    sourceType: 'module',
+  },
+  plugins: ['@typescript-eslint', 'prettier'],
 }
