@@ -9,3 +9,5 @@ steps:
       - docker-compose#v3.9.0:
           build: app
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
+          cache-from: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource:latest
+          push: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource:latest
