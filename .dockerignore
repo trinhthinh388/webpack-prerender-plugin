@@ -1,0 +1,3 @@
+.buildkite
+node_modules
+docker-compose*
