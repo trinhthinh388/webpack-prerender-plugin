@@ -1,0 +1,9 @@
+steps:
+  - label: ':docker: Docker build'
+    key: docker
+    agents:
+      queue: 'webpack-prerender-plugin'
+    plugins:
+      - docker-compose#v3.9.0:
+          build: app
+          config: ./infra/docker-compose.yml
