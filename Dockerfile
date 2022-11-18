@@ -9,5 +9,3 @@ COPY .yarn /plugin/.yarn
 RUN yarn install
 
 COPY . /plugin
-
-ENTRYPOINT [ "yarn" ]
