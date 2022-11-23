@@ -25,5 +25,5 @@ export abstract class RendererPlugin {
     this.response = _response;
   }
 
-  abstract process(): string;
+  abstract process(): Promise<string>;
 }

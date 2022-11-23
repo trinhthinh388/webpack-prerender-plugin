@@ -89,7 +89,12 @@ export class PuppeteerRenderer {
         result.CSSCoverage = (usedBytes / totalBytes) * 100;
       }
 
+      for (const r of this._resources) {
+        await this.optimize(result.html, r);
+      }
+
       await page.close();
+
       return result;
     } catch (err) {
       console.error(`Unable to render route ${route}.`);
@@ -114,6 +119,17 @@ export class PuppeteerRenderer {
 
   private interceptResponse(response: HTTPResponse) {
     this._resources.push(response);
+  }
+
+  private async optimize(_html: string, _response: HTTPResponse) {
+    let updateHtml = _html;
+
+    for (const Plugin of this._plugins) {
+      const p = new Plugin(updateHtml, _response);
+      updateHtml = await p.process();
+    }
+
+    return updateHtml;
   }
 
   destroy() {
