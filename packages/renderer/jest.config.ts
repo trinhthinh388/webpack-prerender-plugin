@@ -6,6 +6,7 @@ import type { Config } from 'jest';
 
 const configs: Config = {
   preset: 'ts-jest',
+  testMatch: ['**/*.spec.ts'],
   testEnvironment: 'node',
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   clearMocks: true,

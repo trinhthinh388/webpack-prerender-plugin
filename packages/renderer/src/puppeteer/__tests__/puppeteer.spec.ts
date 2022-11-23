@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { PuppeteerRenderer, defaultOptions } from './PuppeteerRenderer';
+import { PuppeteerRenderer, defaultOptions } from '../PuppeteerRenderer';
 import puppeteer from 'puppeteer';
 
 describe('PuppeteerRenderer', () => {

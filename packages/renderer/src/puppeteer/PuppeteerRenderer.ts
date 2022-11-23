@@ -1,30 +1,30 @@
-import puppeteer, {
-  PuppeteerLaunchOptions,
-  Browser,
-  WaitForOptions,
-  HTTPRequest,
-} from 'puppeteer';
-import { RenderError } from '../misc';
+import puppeteer, { Browser, HTTPRequest, HTTPResponse } from 'puppeteer';
+import { CSSOptimizer } from '../CSSOptimizer';
+import { RenderError, PuppeteerRendererOptions } from '../misc';
 
-export interface PuppeteerRendererOptions extends PuppeteerLaunchOptions {
-  maxConcurrentRoutes?: number;
-  port?: number;
-  skipThirdPartyRequests?: boolean;
-  navigationOptions?: WaitForOptions & { referer?: string };
-  renderAfterElementExists?: string;
-}
+type RendererPlugins = typeof CSSOptimizer;
 
 export const defaultOptions: PuppeteerRendererOptions = {
   maxConcurrentRoutes: 0,
   port: 3000,
   skipThirdPartyRequests: false,
+  inlineCSS: false,
+  ignoreErrorRequest: true,
 };
 
 export class PuppeteerRenderer {
-  private _options: PuppeteerRendererOptions = { ...defaultOptions };
+  private _options: PuppeteerRendererOptions = {};
   private _browser: Browser | null = null;
+  private _plugins: RendererPlugins[] = [];
+  private _resources: HTTPResponse[] = [];
   constructor(opts: PuppeteerRendererOptions = {}) {
-    this._options = { ...this._options, ...opts };
+    this._options = { ...defaultOptions, ...opts };
+
+    if (this._options.inlineCSS) this._plugins.push(CSSOptimizer);
+
+    this.render = this.render.bind(this);
+    this.interceptRequest = this.interceptRequest.bind(this);
+    this.interceptResponse = this.interceptResponse.bind(this);
   }
 
   async launch() {
@@ -49,6 +49,8 @@ export class PuppeteerRenderer {
 
       const page = await this._browser.newPage();
 
+      if (this._options.inlineCSS) await page.coverage.startCSSCoverage();
+
       const baseURL = `http://localhost:${this._options.port}`;
 
       if (this._options.defaultViewport)
@@ -57,6 +59,8 @@ export class PuppeteerRenderer {
       await page.setRequestInterception(true);
 
       page.on('request', this.interceptRequest(baseURL));
+
+      page.on('response', this.interceptResponse);
 
       await page.goto(`${baseURL}${route}`, {
         waitUntil: 'networkidle0',
@@ -67,11 +71,23 @@ export class PuppeteerRenderer {
         await page.waitForSelector(this._options.renderAfterElementExists);
       }
 
-      const result = {
+      const result: any = {
         originalRoute: route,
         renderRoute: await page.evaluate('window.location.pathname'),
         html: await page.content(),
       };
+
+      if (this._options.inlineCSS) {
+        let totalBytes = 0;
+        let usedBytes = 0;
+        const CSSCov = await page.coverage.stopCSSCoverage();
+        for (const entry of CSSCov) {
+          totalBytes += entry.text.length;
+          for (const range of entry.ranges)
+            usedBytes += range.end - range.start - 1;
+        }
+        result.CSSCoverage = (usedBytes / totalBytes) * 100;
+      }
 
       await page.close();
       return result;
@@ -82,7 +98,7 @@ export class PuppeteerRenderer {
     }
   }
 
-  interceptRequest(baseURL: string) {
+  private interceptRequest(baseURL: string) {
     return (req: HTTPRequest) => {
       // Skip third party requests if needed.
       if (this._options.skipThirdPartyRequests) {
@@ -94,6 +110,10 @@ export class PuppeteerRenderer {
 
       req.continue();
     };
+  }
+
+  private interceptResponse(response: HTTPResponse) {
+    this._resources.push(response);
   }
 
   destroy() {

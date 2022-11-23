@@ -8,9 +8,11 @@
   "author": "Thinh Trinh",
   "license": "MIT",
   "scripts": {
-    "test": "jest --collect-coverage"
+    "test": "jest --collect-coverage",
+    "test:integration": "jest --config jest.integration.config.ts"
   },
   "dependencies": {
+    "css-tree": "^2.2.1",
     "promise-limit": "^2.7.0",
     "puppeteer": "^19.2.2"
   },
