@@ -16,12 +16,10 @@ export interface PuppeteerRendererOptions extends PuppeteerLaunchOptions {
 
 export abstract class RendererPlugin {
   protected originHtmlTemplate: string;
-  protected updatedHtml: string;
   protected response: HTTPResponse;
 
   constructor(_html: string, _response: HTTPResponse) {
     this.originHtmlTemplate = _html;
-    this.updatedHtml = _html;
     this.response = _response;
   }
 

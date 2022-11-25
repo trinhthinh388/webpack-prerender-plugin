@@ -12,6 +12,7 @@
     "test:integration": "jest --config jest.integration.config.ts"
   },
   "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
     "css-tree": "^2.2.1",
     "promise-limit": "^2.7.0",
     "puppeteer": "^19.2.2"

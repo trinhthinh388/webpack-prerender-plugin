@@ -49,8 +49,6 @@ export class PuppeteerRenderer {
 
       const page = await this._browser.newPage();
 
-      if (this._options.inlineCSS) await page.coverage.startCSSCoverage();
-
       const baseURL = `http://localhost:${this._options.port}`;
 
       if (this._options.defaultViewport)
@@ -76,18 +74,6 @@ export class PuppeteerRenderer {
         renderRoute: await page.evaluate('window.location.pathname'),
         html: await page.content(),
       };
-
-      if (this._options.inlineCSS) {
-        let totalBytes = 0;
-        let usedBytes = 0;
-        const CSSCov = await page.coverage.stopCSSCoverage();
-        for (const entry of CSSCov) {
-          totalBytes += entry.text.length;
-          for (const range of entry.ranges)
-            usedBytes += range.end - range.start - 1;
-        }
-        result.CSSCoverage = (usedBytes / totalBytes) * 100;
-      }
 
       for (const r of this._resources) {
         await this.optimize(result.html, r);
