@@ -1,6 +1,7 @@
 import { HTTPResponse } from 'puppeteer';
 import csstree, { CssNode } from 'css-tree';
 import { load, CheerioAPI } from 'cheerio';
+import fs from 'fs';
 import { RendererPlugin, isSuccessResponse } from '../misc';
 
 export class CSSOptimizer extends RendererPlugin {
@@ -21,7 +22,9 @@ export class CSSOptimizer extends RendererPlugin {
 
       this.removeUnusedSelector(ast);
 
-      // const res = csstree.generate(ast);
+      const res = csstree.generate(ast);
+
+      fs.writeFileSync(this.response.request().url().split('/').at(-1)!, res);
 
       // console.log(this.response.request().url());
       // console.log('Has unused keyframes: ', res.includes('Unused-keyframes'));
@@ -38,34 +41,21 @@ export class CSSOptimizer extends RendererPlugin {
   }
 
   private removeUnusedSelector(ast: CssNode) {
-    let block = 0;
     csstree.walk(ast, {
       visit: 'Rule',
-      enter(node, item, list) {
-        block++;
+      enter: (node, item, list) => {
+        const selector = this.getSelector(node);
+        if (selector && !this.isSelectorInuse(selector)) {
+          list.remove(item);
+        }
       },
     });
-    console.log(block);
   }
 
-  private getFullSelector(node: CssNode) {
-    const selectors: Array<string> = [];
-    csstree.walk(node, _n => {
-      switch (_n.type) {
-        case 'ClassSelector': {
-          selectors.push(`.${_n.name}`);
-          break;
-        }
-        case 'TypeSelector': {
-          selectors.push(_n.name);
-          break;
-        }
-        case 'IdSelector': {
-          selectors.push(`#${_n.name}`);
-          break;
-        }
-      }
-    });
-    return selectors.join(' ');
+  private getSelector(rule: CssNode) {
+    const block = csstree.generate(rule);
+    block.trim();
+    const selector = block.split('{').at(0);
+    return selector;
   }
 }

@@ -25,11 +25,3 @@
 .App-link {
   color: #61dafb;
 }
-
-.App .App-header {
-  min-height: 100vh;
-}
-
-.App .App-header .App-unused {
-  display: none;
-}
