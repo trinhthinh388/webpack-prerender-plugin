@@ -1,4 +1,4 @@
-import puppeteer, { Browser, HTTPRequest, HTTPResponse } from 'puppeteer';
+import puppeteer, { Browser, HTTPRequest, HTTPResponse, Page } from 'puppeteer';
 import { CSSOptimizer } from '../CSSOptimizer';
 import { RenderError, PuppeteerRendererOptions } from '../misc';
 
@@ -76,7 +76,7 @@ export class PuppeteerRenderer {
       };
 
       for (const r of this._resources) {
-        await this.optimize(result.html, r);
+        await this.optimize(result.html, r, page);
       }
 
       await page.close();
@@ -107,11 +107,11 @@ export class PuppeteerRenderer {
     this._resources.push(response);
   }
 
-  private async optimize(_html: string, _response: HTTPResponse) {
+  private async optimize(_html: string, _response: HTTPResponse, _page: Page) {
     let updateHtml = _html;
 
     for (const Plugin of this._plugins) {
-      const p = new Plugin(updateHtml, _response);
+      const p = new Plugin(updateHtml, _response, _page);
       updateHtml = await p.process();
     }
 

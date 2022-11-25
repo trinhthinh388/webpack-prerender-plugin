@@ -1,13 +1,13 @@
-import { HTTPResponse } from 'puppeteer';
-import csstree, { CssNode } from 'css-tree';
+import { HTTPResponse, Page } from 'puppeteer';
+import csstree, { CssNode, keyword } from 'css-tree';
 import { load, CheerioAPI } from 'cheerio';
 import fs from 'fs';
 import { RendererPlugin, isSuccessResponse } from '../misc';
 
 export class CSSOptimizer extends RendererPlugin {
   private $: CheerioAPI;
-  constructor(_html: string, _response: HTTPResponse) {
-    super(_html, _response);
+  constructor(_html: string, _response: HTTPResponse, _page: Page) {
+    super(_html, _response, _page);
     this.$ = load(this.originHtmlTemplate);
   }
 
@@ -20,7 +20,9 @@ export class CSSOptimizer extends RendererPlugin {
       const text = await this.response.text();
       const ast = csstree.parse(text);
 
-      this.removeUnusedSelector(ast);
+      await this.removeUnusedSelector(ast);
+
+      await this.removeUnmatchMedia(ast);
 
       const res = csstree.generate(ast);
 
@@ -40,7 +42,11 @@ export class CSSOptimizer extends RendererPlugin {
     return !!this.$(selector).length;
   }
 
-  private removeUnusedSelector(ast: CssNode) {
+  private async isMediaQueryMatches(query: string) {
+    return await this.page.evaluate(`window.matchMedia("${query}").matches`);
+  }
+
+  private async removeUnusedSelector(ast: CssNode) {
     csstree.walk(ast, {
       visit: 'Rule',
       enter: (node, item, list) => {
@@ -52,10 +58,40 @@ export class CSSOptimizer extends RendererPlugin {
     });
   }
 
+  private async removeUnmatchMedia(ast: CssNode) {
+    const promises: Array<Promise<void>> = [];
+    const fn = async (
+      atrule: CssNode,
+      item: csstree.ListItem<CssNode>,
+      list: csstree.List<CssNode>
+    ) => {
+      const selector = this.getSelector(atrule);
+      if (selector && !(await this.isMediaQueryMatches(selector))) {
+        list.remove(item);
+      }
+    };
+    csstree.walk(ast, {
+      visit: 'Atrule',
+      enter: (...args) => {
+        promises.push(fn(...args));
+      },
+    });
+
+    await Promise.all(promises);
+  }
+
   private getSelector(rule: CssNode) {
     const block = csstree.generate(rule);
     block.trim();
-    const selector = block.split('{').at(0);
-    return selector;
+    switch (rule.type) {
+      case 'Rule':
+        return block.trim().split('{').at(0);
+      case 'Atrule': {
+        switch (keyword(rule.name).basename) {
+          case 'media':
+            return block.trim().split('{').at(0)?.split('media').at(-1);
+        }
+      }
+    }
   }
 }
