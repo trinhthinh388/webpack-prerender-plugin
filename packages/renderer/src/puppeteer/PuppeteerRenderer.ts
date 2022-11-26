@@ -17,14 +17,18 @@ export class PuppeteerRenderer {
   private _browser: Browser | null = null;
   private _plugins: RendererPlugins[] = [];
   private _resources: HTTPResponse[] = [];
+  private _requests: Set<string>;
+
   constructor(opts: PuppeteerRendererOptions = {}) {
     this._options = { ...defaultOptions, ...opts };
+    this._requests = new Set();
 
     if (this._options.inlineCSS) this._plugins.push(CSSOptimizer);
 
     this.render = this.render.bind(this);
     this.interceptRequest = this.interceptRequest.bind(this);
     this.interceptResponse = this.interceptResponse.bind(this);
+    this.createTracker = this.createTracker.bind(this);
   }
 
   async launch() {
@@ -47,18 +51,15 @@ export class PuppeteerRenderer {
         );
       }
 
-      const page = await this._browser.newPage();
-
       const baseURL = `http://localhost:${this._options.port}`;
+
+      const page = await this._browser.newPage();
+      const tracker = this.createTracker(page);
+
+      await tracker.track();
 
       if (this._options.defaultViewport)
         page.setViewport(this._options.defaultViewport);
-
-      await page.setRequestInterception(true);
-
-      page.on('request', this.interceptRequest(baseURL));
-
-      page.on('response', this.interceptResponse);
 
       await page.goto(`${baseURL}${route}`, {
         waitUntil: 'networkidle0',
@@ -78,6 +79,9 @@ export class PuppeteerRenderer {
       for (const r of this._resources) {
         await this.optimize(result.html, r, page);
       }
+
+      tracker.dispose();
+      CSSOptimizer.removeUnusedKeyframes();
 
       await page.close();
 
@@ -105,6 +109,10 @@ export class PuppeteerRenderer {
 
   private interceptResponse(response: HTTPResponse) {
     this._resources.push(response);
+    this._requests.delete(response.request().url());
+    if (this._requests.size === 0) {
+      console.log('Fulfilled!');
+    }
   }
 
   private async optimize(_html: string, _response: HTTPResponse, _page: Page) {
@@ -116,6 +124,33 @@ export class PuppeteerRenderer {
     }
 
     return updateHtml;
+  }
+
+  private createTracker(page: Page) {
+    const baseURL = `http://localhost:${this._options.port}`;
+
+    const onFinished = (req: HTTPRequest) => this._requests.add(req.url());
+    const onFailed = (req: HTTPRequest) => this._requests.delete(req.url());
+
+    const track = async () => {
+      await page.setRequestInterception(true);
+      page.on('request', this.interceptRequest(baseURL));
+      page.on('response', this.interceptResponse);
+      page.on('requestfinished', onFinished);
+      page.on('requestfailed', onFailed);
+    };
+
+    const dispose = () => {
+      page.off('requestfailed', onFailed);
+      page.off('requestfinished', onFinished);
+      page.off('request', this.interceptRequest(baseURL));
+      page.off('response', this.interceptResponse);
+    };
+
+    return {
+      dispose,
+      track,
+    };
   }
 
   destroy() {

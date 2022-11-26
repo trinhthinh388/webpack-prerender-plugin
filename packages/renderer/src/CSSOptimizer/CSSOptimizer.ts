@@ -1,14 +1,24 @@
 import { HTTPResponse, Page } from 'puppeteer';
 import csstree, { CssNode, keyword } from 'css-tree';
 import { load, CheerioAPI } from 'cheerio';
-import fs from 'fs';
 import { RendererPlugin, isSuccessResponse } from '../misc';
 
 export class CSSOptimizer extends RendererPlugin {
   private $: CheerioAPI;
+  static anims: Set<string> = new Set();
+  static keyframes: Set<string> = new Set();
+
   constructor(_html: string, _response: HTTPResponse, _page: Page) {
     super(_html, _response, _page);
     this.$ = load(this.originHtmlTemplate);
+
+    this.isSelectorInuse = this.isSelectorInuse.bind(this);
+    this.getAnims = this.getAnims.bind(this);
+    this.getSelector = this.getSelector.bind(this);
+    this.isMediaQueryMatches = this.isMediaQueryMatches.bind(this);
+    this.process = this.process.bind(this);
+    this.removeUnmatchMedia = this.removeUnmatchMedia.bind(this);
+    this.removeUnusedSelector = this.removeUnusedSelector.bind(this);
   }
 
   async process() {
@@ -20,19 +30,11 @@ export class CSSOptimizer extends RendererPlugin {
       const text = await this.response.text();
       const ast = csstree.parse(text);
 
+      this.getAnims(ast);
+
       await this.removeUnusedSelector(ast);
 
       await this.removeUnmatchMedia(ast);
-
-      const res = csstree.generate(ast);
-
-      fs.writeFileSync(this.response.request().url().split('/').at(-1)!, res);
-
-      // console.log(this.response.request().url());
-      // console.log('Has unused keyframes: ', res.includes('Unused-keyframes'));
-      // console.log('Has unused class: ', res.includes('App-unused'));
-      // console.log('Has unused type selector: ', res.includes('pre'));
-      // console.log('Has unused id selector: ', res.includes('#no-root'));
     }
 
     return this.$.html();
@@ -47,11 +49,16 @@ export class CSSOptimizer extends RendererPlugin {
   }
 
   private async removeUnusedSelector(ast: CssNode) {
+    const getSelector = this.getSelector;
+    const isSelectorInuse = this.isSelectorInuse;
     csstree.walk(ast, {
       visit: 'Rule',
-      enter: (node, item, list) => {
-        const selector = this.getSelector(node);
-        if (selector && !this.isSelectorInuse(selector)) {
+      enter(node, item, list) {
+        if (this.atrule && keyword(this.atrule.name).basename === 'keyframes') {
+          return;
+        }
+        const selector = getSelector(node);
+        if (selector && !isSelectorInuse(selector)) {
           list.remove(item);
         }
       },
@@ -90,8 +97,48 @@ export class CSSOptimizer extends RendererPlugin {
         switch (keyword(rule.name).basename) {
           case 'media':
             return block.trim().split('{').at(0)?.split('media').at(-1);
+          case 'keyframes': {
+            CSSOptimizer.keyframes.add(csstree.generate(rule));
+            return;
+          }
         }
       }
     }
+  }
+
+  static removeUnusedKeyframes() {
+    const anims = CSSOptimizer.anims;
+    const keyframes = CSSOptimizer.keyframes;
+    Array.from(CSSOptimizer.keyframes).forEach(kf => {
+      const ast = csstree.parse(kf);
+      csstree.walk(ast, {
+        visit: 'Atrule',
+        enter(atrule) {
+          const keyword = csstree.keyword(atrule.name);
+
+          if (keyword.basename === 'keyframes') {
+            const name = csstree.generate(atrule.prelude as CssNode);
+            if (!anims.has(name)) {
+              keyframes.delete(kf);
+            }
+          }
+        },
+      });
+    });
+  }
+
+  private getAnims(ast: CssNode) {
+    const anims = csstree.findAll(
+      ast,
+      node => node.type === 'Declaration' && node.property === 'animation'
+    );
+    anims.forEach(a => {
+      csstree.walk(a, {
+        visit: 'Identifier',
+        enter: node => {
+          CSSOptimizer.anims.add(node.name);
+        },
+      });
+    });
   }
 }
