@@ -11,7 +11,6 @@ export const defaultOptions: PuppeteerRendererOptions = {
   inlineCSS: false,
   ignoreErrorRequest: true,
 };
-
 export class PuppeteerRenderer {
   private _options: PuppeteerRendererOptions = {};
   private _browser: Browser | null = null;
@@ -70,18 +69,15 @@ export class PuppeteerRenderer {
         await page.waitForSelector(this._options.renderAfterElementExists);
       }
 
-      const result: any = {
+      const html = await page.content();
+
+      const result = {
         originalRoute: route,
         renderRoute: await page.evaluate('window.location.pathname'),
-        html: await page.content(),
+        html,
       };
 
-      for (const r of this._resources) {
-        await this.optimize(result.html, r, page);
-      }
-
-      tracker.dispose();
-      CSSOptimizer.removeUnusedKeyframes();
+      await tracker.dispose(html);
 
       await page.close();
 
@@ -96,13 +92,13 @@ export class PuppeteerRenderer {
   private interceptRequest(baseURL: string) {
     return (req: HTTPRequest) => {
       // Skip third party requests if needed.
+
       if (this._options.skipThirdPartyRequests) {
         if (!req.url().startsWith(baseURL)) {
           req.abort();
           return;
         }
       }
-
       req.continue();
     };
   }
@@ -130,7 +126,10 @@ export class PuppeteerRenderer {
     const baseURL = `http://localhost:${this._options.port}`;
 
     const onFinished = (req: HTTPRequest) => this._requests.add(req.url());
-    const onFailed = (req: HTTPRequest) => this._requests.delete(req.url());
+    const onFailed = (req: HTTPRequest) => {
+      console.log(req.url());
+      return this._requests.delete(req.url());
+    };
 
     const track = async () => {
       await page.setRequestInterception(true);
@@ -140,11 +139,16 @@ export class PuppeteerRenderer {
       page.on('requestfailed', onFailed);
     };
 
-    const dispose = () => {
+    const dispose = async (html: string) => {
       page.off('requestfailed', onFailed);
       page.off('requestfinished', onFinished);
       page.off('request', this.interceptRequest(baseURL));
       page.off('response', this.interceptResponse);
+
+      for (const r of this._resources) {
+        await this.optimize(html, r, page);
+      }
+      CSSOptimizer.removeUnusedKeyframes();
     };
 
     return {

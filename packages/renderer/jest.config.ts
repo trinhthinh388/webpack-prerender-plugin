@@ -5,9 +5,14 @@ import type { Config } from 'jest';
  */
 
 const configs: Config = {
-  preset: 'ts-jest',
+  testTimeout: 30000,
+  preset: 'jest-puppeteer',
+  cache: false,
   testMatch: ['**/*.spec.ts'],
-  testEnvironment: 'node',
+  transform: {
+    '^.+\\.ts$': 'ts-jest',
+  },
+  // testEnvironment: 'node',
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   clearMocks: true,
   coverageDirectory: 'coverage',
@@ -20,6 +25,9 @@ const configs: Config = {
       statements: 100,
     },
   },
+  globalSetup: './setup.cjs',
+  globalTeardown: './teardown.cjs',
+  testEnvironment: './puppeteer_environment.cjs',
 };
 
 export default configs;

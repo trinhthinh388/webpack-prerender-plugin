@@ -96,7 +96,12 @@ export class CSSOptimizer extends RendererPlugin {
       case 'Atrule': {
         switch (keyword(rule.name).basename) {
           case 'media':
-            return block.trim().split('{').at(0)?.split('media').at(-1);
+            /* istanbul ignore next */ return block
+              .trim()
+              .split('{')
+              .at(0)
+              ?.split('media')
+              .at(-1);
           case 'keyframes': {
             CSSOptimizer.keyframes.add(csstree.generate(rule));
             return;
