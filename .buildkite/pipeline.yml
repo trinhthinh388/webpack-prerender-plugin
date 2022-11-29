@@ -16,7 +16,7 @@ steps:
   - wait
 
   - label: ':jest: :puppeteer: Unit tests for Puppeteer renderer'
-    command: yarn renderer test
+    command: yarn example serve & ./scripts/wait-for-it.sh localhost:3000 -- yarn renderer test
     plugins:
       - ecr#v2.7.0:
           login: true
