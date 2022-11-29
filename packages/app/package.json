@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "serve -s example"
+    "serve": "serve -s -n example"
   },
   "dependencies": {
     "serve": "^14.1.2"
