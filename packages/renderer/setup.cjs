@@ -9,13 +9,18 @@ const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup');
 
 module.exports = async function () {
   const browser = await puppeteer.launch({
+    headless: false,
     args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
+      '--disable-gpu',
       '--disable-dev-shm-usage',
-      '--disable-gpu'
+      '--disable-setuid-sandbox',
+      '--no-first-run',
+      '--no-sandbox',
+      '--no-zygote',
+      '--single-process',
     ],
-    executablePath: '/usr/bin/google-chrome'
+    ignoreDefaultArgs: ['--disable-extensions'],
+    executablePath: '/usr/bin/chromium-browser'
   });
   // store the browser instance so we can teardown it later
   // this global is only available in the teardown but not in TestEnvironments

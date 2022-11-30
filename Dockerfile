@@ -1,23 +1,26 @@
-FROM node:slim
+FROM alpine:3.17
 
-# We don't need the standalone Chromium
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+RUN apk update && apk add --no-cache nmap && \
+    echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
+    echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
+    apk update && \
+    apk add --no-cache \
+      chromium \
+      harfbuzz \
+      "freetype>2.8" \
+      ttf-freefont \
+      nss \
+      bash \
+      yarn
 
-# Install Google Chrome Stable and fonts
-# Note: this installs the necessary libs to make the browser work with Puppeteer.
-RUN apt-get update && apt-get install gnupg wget -y && \
-  wget --quiet --output-document=- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/trusted.gpg.d/google-archive.gpg && \
-  sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
-  apt-get update && \
-  apt-get install google-chrome-stable -y --no-install-recommends && \
-  rm -rf /var/lib/apt/lists/*
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
-WORKDIR /plugin
+WORKDIR /home/chrome/plugin
 
-COPY package.json yarn.lock .yarnrc.yml /plugin/
+COPY package.json yarn.lock .yarnrc.yml /home/chrome/plugin/
 
-COPY .yarn /plugin/.yarn
+COPY .yarn /home/chrome/plugin/.yarn
 
-COPY . /plugin
+COPY . /home/chrome/plugin/
 
 RUN yarn install

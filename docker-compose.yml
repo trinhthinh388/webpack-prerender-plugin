@@ -1,5 +1,8 @@
 version: '3.2'
 services:
   plugin:
-    build: .
     platform: linux/amd64
+    cap_add:
+      - SYS_ADMIN
+    build:
+      context: .
