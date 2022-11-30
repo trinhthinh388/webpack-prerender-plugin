@@ -16,7 +16,10 @@ module.exports = {
     ],
     ignoreDefaultArgs: ['--disable-extensions'],
     defaultViewport: null,
-    executablePath: '/usr/bin/chromium-browser'
+    executablePath: '/usr/bin/chromium-browser',
+    env: {
+      DISPLAY: ":10.0"
+    }
   },
   browserContext: 'default',
 }
