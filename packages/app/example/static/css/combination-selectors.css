@@ -1,0 +1,28 @@
+.App .App-header {
+  min-height: 100vh;
+}
+
+.App .App-header .App-unused {
+  display: none;
+}
+
+.App #root {
+  display: flex;
+}
+
+#root .App {
+  display: block;
+}
+
+#root body {
+  display: none;
+}
+
+body #root {
+  display: block;
+}
+
+#App,
+#root {
+  display: block;
+}

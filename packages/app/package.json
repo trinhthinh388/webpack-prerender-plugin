@@ -1,0 +1,11 @@
+{
+  "name": "example-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "serve -s -n example"
+  },
+  "dependencies": {
+    "serve": "^14.1.2"
+  }
+}

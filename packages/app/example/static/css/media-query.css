@@ -1,0 +1,20 @@
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    -webkit-animation: App-logo-spin 20s linear infinite;
+    animation: App-logo-spin 20s linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .App-logo {
+    animation: none;
+    -webkit-animation: none;
+  }
+}
+
+@media only print and (prefers-reduced-motion: reduce) {
+  .App-logo {
+    animation: none;
+    -webkit-animation: none;
+  }
+}
