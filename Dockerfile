@@ -22,4 +22,8 @@ COPY .yarn /home/chrome/plugin/.yarn
 
 COPY . /home/chrome/plugin/
 
+RUN chmod +x ./scripts/docker-entrypoint.sh
+
+ENTRYPOINT ["./scripts/entrypoint.sh"]
+
 RUN yarn install
