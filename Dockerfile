@@ -7,8 +7,10 @@ RUN apk update && apk add --no-cache --virtual \
     chromium \
     ca-certificates \
     yarn \
-    bash
+    bash \
+    xvfb
 
+ENV DISPLAY :99
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser
 
