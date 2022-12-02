@@ -14,18 +14,18 @@ ENV DISPLAY :99
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser
 
-RUN addgroup -S plugin && adduser -S plugin -G plugin
+RUN addgroup -S chrome && adduser -S chrome -G chrome
 
-USER plugin
+USER chrome
 
-WORKDIR /home/chrome/plugin
+WORKDIR /home/chrome
 
-COPY --chown=plugin:plugin package.json yarn.lock .yarnrc.yml /home/chrome/plugin/
+COPY --chown=chrome:chrome package.json yarn.lock .yarnrc.yml /home/chrome/
 
-COPY --chown=plugin:plugin .yarn /home/chrome/plugin/.yarn
+COPY --chown=chrome:chrome .yarn /home/chrome/.yarn
 
-COPY --chown=plugin:plugin . /home/chrome/plugin/
+COPY --chown=chrome:chrome . /home/chrome/
 
 RUN yarn install
 
-ENTRYPOINT ["/home/chrome/plugin/scripts/entrypoint.sh"]
+ENTRYPOINT ["/home/chrome/scripts/entrypoint.sh"]
