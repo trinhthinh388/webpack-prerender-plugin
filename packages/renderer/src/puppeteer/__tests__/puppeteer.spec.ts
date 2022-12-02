@@ -14,7 +14,6 @@ describe('PuppeteerRenderer', () => {
 
   beforeEach(async () => {
     page = await globalThis.__BROWSER_GLOBAL__.newPage();
-    console.log('Running test');
   });
 
   afterEach(async () => {
