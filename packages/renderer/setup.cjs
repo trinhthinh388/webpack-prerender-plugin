@@ -9,7 +9,7 @@ const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup');
 
 module.exports = async function () {
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     args: [
       '--disable-gpu',
       '--disable-dev-shm-usage',
@@ -20,7 +20,7 @@ module.exports = async function () {
       '--single-process',
     ],
     ignoreDefaultArgs: ['--disable-extensions'],
-    executablePath: '/usr/bin/chromium-browser',
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     debuggingPort: 9004
   });
   // store the browser instance so we can teardown it later
