@@ -21,7 +21,6 @@ module.exports = async function () {
     ],
     ignoreDefaultArgs: ['--disable-extensions'],
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    debuggingPort: 9004
   });
   // store the browser instance so we can teardown it later
   // this global is only available in the teardown but not in TestEnvironments
