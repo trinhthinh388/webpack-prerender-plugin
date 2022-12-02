@@ -17,6 +17,7 @@ module.exports = {
     ignoreDefaultArgs: ['--disable-extensions'],
     defaultViewport: null,
     executablePath: '/usr/bin/chromium-browser',
+    debuggingPort: 9004
   },
   browserContext: 'default',
 }
