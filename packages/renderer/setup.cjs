@@ -28,5 +28,5 @@ module.exports = async function () {
 
   // use the file system to expose the wsEndpoint for TestEnvironments
   await mkdir(DIR, {recursive: true});
-  await writeFile(path.join(DIR, 'wsEndpoint'), browser.wsEndpoint());
+  // await writeFile(path.join(DIR, 'wsEndpoint'), browser.wsEndpoint());
 };
