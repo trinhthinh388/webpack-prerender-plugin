@@ -18,6 +18,7 @@ describe('CSSOptimizer', () => {
 
   afterEach(async () => {
     jest.restoreAllMocks();
+    await page.close();
   });
   beforeEach(async () => {
     page = await globalThis.__BROWSER_GLOBAL__.newPage();
