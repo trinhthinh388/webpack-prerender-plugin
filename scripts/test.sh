@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-echo "Chromium version: ${chromium-browser --version}"
+echo "Chromium version:"
+echo chromium-browser --version
 
 echo "Starting Test Environent"
 
