@@ -11,8 +11,7 @@ RUN apk update && apk add --no-cache nmap && \
       ttf-freefont \
       nss \
       bash \
-      yarn \
-      diffutils
+      yarn
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
