@@ -5,6 +5,7 @@ import { RendererPlugin, isSuccessResponse } from '../misc';
 
 export class CSSOptimizer extends RendererPlugin {
   private $: CheerioAPI;
+
   static anims: Set<string> = new Set();
   static keyframes: Set<string> = new Set();
 
@@ -17,8 +18,9 @@ export class CSSOptimizer extends RendererPlugin {
     this.getSelector = this.getSelector.bind(this);
     this.isMediaQueryMatches = this.isMediaQueryMatches.bind(this);
     this.process = this.process.bind(this);
-    this.removeUnmatchMedia = this.removeUnmatchMedia.bind(this);
-    this.removeUnusedSelector = this.removeUnusedSelector.bind(this);
+    this.removeUnmatchAtrule = this.removeUnmatchAtrule.bind(this);
+    this.removeUnusedRule = this.removeUnusedRule.bind(this);
+    this.removeUnusedKeyframes = this.removeUnusedKeyframes.bind(this);
   }
 
   async process() {
@@ -30,11 +32,18 @@ export class CSSOptimizer extends RendererPlugin {
       const text = await this.response.text();
       const ast = csstree.parse(text);
 
-      this.getAnims(ast);
+      await this.removeUnusedRule(ast);
 
-      await this.removeUnusedSelector(ast);
+      await this.removeUnmatchAtrule(ast);
 
-      await this.removeUnmatchMedia(ast);
+      await this.removeUnusedKeyframes(ast);
+
+      const inlineStyles = `
+        <!-- ${this.response.request().url()} -->
+        <style>${csstree.generate(ast)}</style>
+      `;
+
+      this.$('head').append(inlineStyles);
     }
 
     return this.$.html();
@@ -48,7 +57,7 @@ export class CSSOptimizer extends RendererPlugin {
     return await this.page.evaluate(`window.matchMedia("${query}").matches`);
   }
 
-  private async removeUnusedSelector(ast: CssNode) {
+  private async removeUnusedRule(ast: CssNode) {
     const getSelector = this.getSelector;
     const isSelectorInuse = this.isSelectorInuse;
     csstree.walk(ast, {
@@ -65,7 +74,7 @@ export class CSSOptimizer extends RendererPlugin {
     });
   }
 
-  private async removeUnmatchMedia(ast: CssNode) {
+  private async removeUnmatchAtrule(ast: CssNode) {
     const promises: Array<Promise<void>> = [];
     const fn = async (
       atrule: CssNode,
@@ -73,7 +82,10 @@ export class CSSOptimizer extends RendererPlugin {
       list: csstree.List<CssNode>
     ) => {
       const selector = this.getSelector(atrule);
-      if (selector && !(await this.isMediaQueryMatches(selector))) {
+      if (
+        (selector && !(await this.isMediaQueryMatches(selector))) ||
+        selector === 'keyframes'
+      ) {
         list.remove(item);
       }
     };
@@ -87,7 +99,7 @@ export class CSSOptimizer extends RendererPlugin {
     await Promise.all(promises);
   }
 
-  private getSelector(rule: CssNode) {
+  private getSelector(rule: CssNode): string | undefined {
     const block = csstree.generate(rule);
     block.trim();
     switch (rule.type) {
@@ -96,25 +108,27 @@ export class CSSOptimizer extends RendererPlugin {
       case 'Atrule': {
         switch (keyword(rule.name).basename) {
           case 'media':
-            /* istanbul ignore next */ return block
+            return block
               .trim()
               .split('{')
-              .at(0)
+              /* istanbul ignore next */ .at(0)
               ?.split('media')
               .at(-1);
           case 'keyframes': {
             CSSOptimizer.keyframes.add(csstree.generate(rule));
-            return;
+            return 'keyframes';
           }
         }
       }
     }
   }
 
-  static removeUnusedKeyframes() {
+  private removeUnusedKeyframes(ast: CssNode) {
+    this.getAnims(ast);
     const anims = CSSOptimizer.anims;
     const keyframes = CSSOptimizer.keyframes;
-    Array.from(CSSOptimizer.keyframes).forEach(kf => {
+    const usedKeyframes = new Set<string>();
+    Array.from(keyframes).forEach(kf => {
       const ast = csstree.parse(kf);
       csstree.walk(ast, {
         visit: 'Atrule',
@@ -123,8 +137,8 @@ export class CSSOptimizer extends RendererPlugin {
 
           if (keyword.basename === 'keyframes') {
             const name = csstree.generate(atrule.prelude as CssNode);
-            if (!anims.has(name)) {
-              keyframes.delete(kf);
+            if (anims.has(name)) {
+              usedKeyframes.add(kf);
             }
           }
         },

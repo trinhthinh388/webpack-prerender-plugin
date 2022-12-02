@@ -139,16 +139,18 @@ export class PuppeteerRenderer {
       page.on('requestfailed', onFailed);
     };
 
-    const dispose = async (html: string) => {
+    const dispose = async (originHtml: string) => {
       page.off('requestfailed', onFailed);
       page.off('requestfinished', onFinished);
       page.off('request', this.interceptRequest(baseURL));
       page.off('response', this.interceptResponse);
 
+      let _html = originHtml;
+
       for (const r of this._resources) {
-        await this.optimize(html, r, page);
+        _html = await this.optimize(_html, r, page);
       }
-      CSSOptimizer.removeUnusedKeyframes();
+      return _html;
     };
 
     return {
