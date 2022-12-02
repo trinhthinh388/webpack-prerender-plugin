@@ -21,9 +21,6 @@ module.exports = async function () {
     ],
     ignoreDefaultArgs: ['--disable-extensions'],
     executablePath: '/usr/bin/chromium-browser',
-    env: {
-      DISPLAY: ":10.0"
-    }
   });
   // store the browser instance so we can teardown it later
   // this global is only available in the teardown but not in TestEnvironments
