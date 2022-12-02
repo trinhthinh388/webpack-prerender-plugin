@@ -20,11 +20,11 @@ USER plugin
 
 WORKDIR /home/chrome/plugin
 
-COPY --chown=plugin package.json yarn.lock .yarnrc.yml /home/chrome/plugin/
+COPY --chown=plugin:plugin package.json yarn.lock .yarnrc.yml /home/chrome/plugin/
 
-COPY --chown=plugin .yarn /home/chrome/plugin/.yarn
+COPY --chown=plugin:plugin .yarn /home/chrome/plugin/.yarn
 
-COPY --chown=plugin . /home/chrome/plugin/
+COPY --chown=plugin:plugin . /home/chrome/plugin/
 
 RUN yarn install
 
