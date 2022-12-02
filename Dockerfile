@@ -1,21 +1,14 @@
-FROM alpine:3.17
+FROM alpine:3.17 as base
 
-RUN set -x \
-    && apk update \
-    && apk upgrade && \
-    echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
-    echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
-    apk update && \
-    apk add --no-cache \
-      chromium@edge \
-      nss@edge \
-      bash \
-      yarn \
-      udev \
-      ttf-freefont
+RUN apk update && apk add --no-cache --virtual \
+    .build-deps \
+    udev \
+    ttf-opensans \
+    chromium \
+    ca-certificates
 
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
-    CHROME_BIN="/usr/bin/chromium-browser"
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser
 
 WORKDIR /home/chrome/plugin
 
