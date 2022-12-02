@@ -19,6 +19,7 @@ describe('PuppeteerRenderer', () => {
 
   afterEach(async () => {
     jest.restoreAllMocks();
+    await page.close();
   });
 
   it('Should launch an instance', async () => {
