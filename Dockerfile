@@ -22,8 +22,8 @@ COPY .yarn /home/chrome/plugin/.yarn
 
 COPY . /home/chrome/plugin/
 
-RUN chmod +x /home/chrome/plugin/scripts/entrypoint.sh
+RUN yarn install
+
+USER chrome
 
 ENTRYPOINT ["/home/chrome/plugin/scripts/entrypoint.sh"]
-
-RUN yarn install
