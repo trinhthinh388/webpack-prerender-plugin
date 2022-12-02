@@ -22,7 +22,7 @@ COPY .yarn /home/chrome/plugin/.yarn
 
 COPY . /home/chrome/plugin/
 
-RUN chmod +x /home/chrome/plugin/scripts/docker-entrypoint.sh
+RUN chmod +x /home/chrome/plugin/scripts/entrypoint.sh
 
 ENTRYPOINT ["/home/chrome/plugin/scripts/entrypoint.sh"]
 
