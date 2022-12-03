@@ -15,12 +15,13 @@ export class CSSOptimizer extends RendererPlugin {
 
     this.isSelectorInuse = this.isSelectorInuse.bind(this);
     this.getAnims = this.getAnims.bind(this);
-    this.getSelector = this.getSelector.bind(this);
     this.isMediaQueryMatches = this.isMediaQueryMatches.bind(this);
     this.process = this.process.bind(this);
     this.removeUnmatchAtrule = this.removeUnmatchAtrule.bind(this);
     this.removeUnusedRule = this.removeUnusedRule.bind(this);
     this.removeUnusedKeyframes = this.removeUnusedKeyframes.bind(this);
+    this.removePseudoElements = this.removePseudoElements.bind(this);
+    this.getSelector = this.getSelector.bind(this);
   }
 
   async process() {
@@ -58,7 +59,7 @@ export class CSSOptimizer extends RendererPlugin {
   }
 
   private async removeUnusedRule(ast: CssNode) {
-    const getSelector = this.getSelector;
+    const getSelector = this.removePseudoElements(this.getSelector);
     const isSelectorInuse = this.isSelectorInuse;
     csstree.walk(ast, {
       visit: 'Rule',
@@ -67,6 +68,7 @@ export class CSSOptimizer extends RendererPlugin {
           return;
         }
         const selector = getSelector(node);
+        console.log(selector);
         if (selector && !isSelectorInuse(selector)) {
           list.remove(item);
         }
@@ -159,5 +161,18 @@ export class CSSOptimizer extends RendererPlugin {
         },
       });
     });
+  }
+
+  private removePseudoElements(
+    fn: (rule: CssNode) => string | undefined
+  ): (rule: CssNode) => string {
+    return (rule: CssNode) => {
+      const res = fn(rule) || '';
+      return res
+        .split(
+          /:(?=([^"'\\]*(\\.|["']([^"'\\]*\\.)*[^"'\\]*['"]))*[^"']*$)/g
+        )[0]
+        .replace('_ESCAPED_COLON_', '\\:');
+    };
   }
 }
