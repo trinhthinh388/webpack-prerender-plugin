@@ -8,7 +8,8 @@ RUN apk update && apk add --no-cache --virtual \
     ca-certificates \
     yarn \
     bash \
-    xvfb
+    xvfb \
+    make
 
 ENV DISPLAY :99
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
