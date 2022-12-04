@@ -43,13 +43,6 @@ steps:
           - label: major
             value: major
 
-  - command: make release
+  - command: make prepare-release
     depends_on: puppeteer-release
-    plugins:
-      - ecr#v2.7.0:
-          login: true
-          account_ids: '014222686667'
-          region: 'ap-southeast-1'
-      - docker-compose#v3.9.0:
-          image: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource:webpack-prerender-plugin:latest
-          always-pull: true
+    key: prepare-puppeteer-release
