@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-SEMANTIC_VERSION="$(buildkite-agent meta-data get "semantic-version")"
+export SEMANTIC_VERSION="$(buildkite-agent meta-data get "semantic-version")"
 
 # Create a pipeline with provided semantic version
 PIPELINE="steps:
