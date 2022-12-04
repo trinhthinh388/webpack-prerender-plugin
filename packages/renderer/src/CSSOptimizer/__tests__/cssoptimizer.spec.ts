@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { CSSOptimizer } from '../CSSOptimizer';
 import puppeteer, { Browser, HTTPResponse, Page } from 'puppeteer';
 import csstree from 'css-tree';
@@ -42,5 +43,21 @@ describe('CSSOptimizer', () => {
 
     const res = await optimizer.process();
     expect(res).toBe('test');
+  });
+
+  it('Should return empty string when get an undefined rule', () => {
+    const optimizer = new CSSOptimizer(
+      'test',
+      {
+        status() {
+          return 400;
+        },
+      } as HTTPResponse,
+      page
+    );
+
+    // @ts-ignore
+    const result = optimizer.removePseudoElements(() => undefined)();
+    expect(result).toBe('');
   });
 });

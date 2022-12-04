@@ -68,7 +68,6 @@ export class CSSOptimizer extends RendererPlugin {
           return;
         }
         const selector = getSelector(node);
-        console.log(selector);
         if (selector && !isSelectorInuse(selector)) {
           list.remove(item);
         }

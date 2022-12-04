@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const { NODE_ENV } = process.env;
@@ -13,7 +12,7 @@ module.exports = {
     filename: 'main.js',
   },
   devServer: {
-    port: 3000,
+    port: 3030,
   },
   module: {
     rules: [
