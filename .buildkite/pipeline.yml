@@ -44,6 +44,6 @@ steps:
             value: major
 
   - label: ':construction_worker: Preparing release environment'
-    command: make prepare-release
+    command: make prepare
     depends_on: puppeteer-release
     key: prepare-puppeteer-release
