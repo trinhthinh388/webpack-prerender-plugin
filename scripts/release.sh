@@ -18,11 +18,9 @@ NC='\033[0m' # No Color
 
 echo -e "${BLUE}Release with $SEMANTIC_VERSION version${NC}"
 
-echo "${BLUE}Packaging build files...${NC}"
+echo -e "${BLUE}Packaging build files...${NC}"
 
 yarn renderer build
-
-yarn npm whoami
 
 cd pacckages/renderer
 
