@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-export SEMANTIC_VERSION="$(buildkite-agent meta-data get "semantic-version")"
+SEMANTIC_VERSION="$(buildkite-agent meta-data get "semantic-version")"
 
 # Create a pipeline with provided semantic version
 PIPELINE="steps:
-  - command: make release
+  - command: make release version=$SEMANTIC_VERSION
     depends_on: prepare-puppeteer-release
     plugins:
       - ecr#v2.7.0:
