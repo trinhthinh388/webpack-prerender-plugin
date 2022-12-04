@@ -29,8 +29,8 @@ steps:
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
 
   - block: 'Release @webpack-prerender-plugin/puppeteer-renderer :rocket:'
+    key: puppeteer-release
     depends_on: puppeteer-renderer-unit-test
-    command: make release
     fields:
       - select: 'Version'
         key: 'semantic-version'
@@ -42,3 +42,6 @@ steps:
             value: minor
           - label: major
             value: major
+
+  - command: make release
+    depends_on: puppeteer-release
