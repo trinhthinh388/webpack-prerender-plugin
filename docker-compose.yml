@@ -6,5 +6,3 @@ services:
       - SYS_ADMIN
     build:
       context: .
-    environment:
-      - NPM_AUTH_TOKEN=${NPM_AUTH_TOKEN}
