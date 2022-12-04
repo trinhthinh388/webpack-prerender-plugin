@@ -1,2 +1,2 @@
 release:
-	echo $(buildkite-agent meta-data get "semantic-version")
+	./scripts/release.sh

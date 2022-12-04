@@ -33,7 +33,7 @@ steps:
     depends_on: puppeteer-renderer-unit-test
     fields:
       - select: 'Version'
-        key: 'semantic-version'
+        key: semantic-version
         default: patch
         options:
           - label: patch
