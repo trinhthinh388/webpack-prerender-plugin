@@ -24,4 +24,4 @@ yarn renderer build
 
 cd pacckages/renderer
 
-yarn version $SEMANTIC_VERSION
+yarn whoami
