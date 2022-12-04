@@ -15,8 +15,8 @@ PIPELINE="steps:
           region: 'ap-southeast-1'
       - docker-compose#v3.9.0:
           run: plugin
-          environment:
-            - NPM_AUTH_TOKEN=${NPM_AUTH_TOKEN}
+          env:
+            - NPM_AUTH_TOKEN
           cache-from: plugin:014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource:latest
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
 "
