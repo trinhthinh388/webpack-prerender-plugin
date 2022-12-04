@@ -2,4 +2,10 @@
 
 set -euo pipefail
 
-echo $(buildkite-agent meta-data get "semantic-version")
+SEMANTIC_VERSION="$(buildkite-agent meta-data get "semantic-version")"
+
+echo "Packaging deploy files..."
+
+yarn renderer build
+
+yarn npm whoami
