@@ -10,4 +10,4 @@ echo "Packaging build files..."
 
 yarn renderer build
 
-yarn version $SEMANTIC_VERSION
+yarn renderer version $SEMANTIC_VERSION
