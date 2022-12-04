@@ -23,3 +23,7 @@ echo "${BLUE}Packaging build files...${NC}"
 yarn renderer build
 
 yarn npm whoami
+
+cd pacckages/renderer
+
+yarn version $SEMANTIC_VERSION
