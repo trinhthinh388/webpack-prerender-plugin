@@ -6,3 +6,5 @@ services:
       - SYS_ADMIN
     build:
       context: .
+    environment:
+      - SEMANTIC_VERSION=${SEMANTIC_VERSION}

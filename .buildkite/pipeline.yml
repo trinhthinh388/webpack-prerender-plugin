@@ -43,7 +43,7 @@ steps:
           - label: major
             value: major
 
-  - command: make release
+  - command: SEMANTIC_VERSION="$(buildkite-agent meta-data get "semantic-version")" && make release
     depends_on: puppeteer-release
     plugins:
       - ecr#v2.7.0:

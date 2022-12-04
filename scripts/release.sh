@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-SEMANTIC_VERSION="$(buildkite-agent meta-data get "semantic-version")"
+echo $SEMANTIC_VERSION
 
 echo "Packaging deploy files..."
 
