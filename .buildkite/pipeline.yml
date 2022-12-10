@@ -34,10 +34,10 @@ steps:
     fields:
       - select: 'Version'
         key: semantic-version
-        default: prepatch
+        default: prerelease
         options:
-          - label: prepatch
-            value: prepatch
+          - label: prerelease
+            value: prerelease
           - label: patch
             value: patch
           - label: minor
