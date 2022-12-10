@@ -7,4 +7,6 @@ services:
     build:
       context: .
       args:
-        NPM_AUTH_TOKEN: ${NPM_AUTH_TOKEN:-sample}
+        - NPM_AUTH_TOKEN: ${NPM_AUTH_TOKEN:-sample}
+    environment:
+      - NPM_AUTH_TOKEN: ${NPM_AUTH_TOKEN:-sample}
