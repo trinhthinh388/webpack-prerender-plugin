@@ -17,6 +17,8 @@ PIPELINE="steps:
           run: plugin
           cache-from: plugin:014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource:latest
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
+          env:
+            - NPM_AUTH_TOKEN
 "
 
 # Upload the new pipeline and add it to the current build
