@@ -12,6 +12,8 @@ steps:
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
           cache-from: plugin:014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource:latest
           push: plugin:014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource:latest
+          env:
+            - NPM_AUTH_TOKEN
 
   - wait
 
