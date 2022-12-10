@@ -23,3 +23,7 @@ echo -e "${BLUE}Packaging build files...${NC}"
 yarn renderer build
 
 yarn npm whoami
+
+cd ./packages/renderer
+
+ls -al
