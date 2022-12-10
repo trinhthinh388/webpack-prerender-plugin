@@ -26,6 +26,6 @@ yarn npm whoami
 
 cd ./packages/renderer
 
-yarn --no-git-tag-version version $SEMANTIC_VERSION
+YARN_VERSION_GIT_TAG='' && yarn version $SEMANTIC_VERSION
 
 yarn npm publish
