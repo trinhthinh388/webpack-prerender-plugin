@@ -6,7 +6,7 @@ steps:
           login: true
           account_ids: '014222686667'
           region: 'ap-southeast-1'
-      - docker-compose#v3.9.0:
+      - docker-compose#v4.7.0:
           build: plugin
           image-name: webpack-prerender-plugin
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
@@ -14,6 +14,7 @@ steps:
           push: plugin:014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource:latest
           env:
             - NPM_AUTH_TOKEN
+          propagate-environment: true
 
   - wait
 
@@ -25,7 +26,7 @@ steps:
           login: true
           account_ids: '014222686667'
           region: 'ap-southeast-1'
-      - docker-compose#v3.9.0:
+      - docker-compose#v4.7.0:
           run: plugin
           cache-from: plugin:014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource:latest
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
