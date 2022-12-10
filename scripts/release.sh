@@ -22,4 +22,4 @@ echo -e "${BLUE}Packaging build files...${NC}"
 
 yarn renderer build
 
-echo $NPM_AUTH_TOKEN
+yarn npm whoami
