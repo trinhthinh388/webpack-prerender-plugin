@@ -22,6 +22,6 @@ echo -e "${BLUE}Packaging build files...${NC}"
 
 yarn renderer build
 
-cd pacckages/renderer
-
 yarn whoami
+
+echo $NPM_AUTH_TOKEN
