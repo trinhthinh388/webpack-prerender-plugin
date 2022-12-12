@@ -46,6 +46,6 @@ echo -e "${GREEN}Successfully publish @webpack-prerender/renderer from v$STABLE_
 
 echo -e "${BLUE}Pushing updates to git...${NC}"
 
-git add packages/* && \
-  && git commit -m "Release @webpack-prerender/renderer to $RELEASE_VERSION" && \
+git add packages/* \
+  && git commit -m "Release @webpack-prerender/renderer to $RELEASE_VERSION" \
   && git push -u origin HEAD
