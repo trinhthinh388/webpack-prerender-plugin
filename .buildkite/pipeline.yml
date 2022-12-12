@@ -29,6 +29,7 @@ steps:
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
 
   - block: 'Release @webpack-prerender-plugin/puppeteer-renderer :rocket:'
+    branches: master
     key: puppeteer-release
     depends_on: puppeteer-renderer-unit-test
     fields:
