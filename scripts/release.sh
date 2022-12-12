@@ -21,11 +21,11 @@ echo -e "${BLUE}Release with $SEMANTIC_VERSION version${NC}"
 
 echo -e "${BLUE}Packaging build files...${NC}"
 
-# yarn renderer build
+yarn renderer build
 
-# yarn npm whoami
+yarn npm whoami
 
-# yarn renderer version $SEMANTIC_VERSION
+yarn renderer version $SEMANTIC_VERSION
 
 # yarn renderer npm publish --access public
 
@@ -37,7 +37,9 @@ git remote set-url origin https://trinhthinh388:${GITHUB_ACCESS_TOKEN}@github.co
 
 git status
 
-git branch
+git checkout $BUILDKITE_BRANCH
+
+git fetch
 
 
 # git add . && \

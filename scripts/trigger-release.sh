@@ -20,6 +20,7 @@ PIPELINE="steps:
           env:
             - NPM_AUTH_TOKEN
             - GITHUB_ACCESS_TOKEN
+            - BUILDKITE_BRANCH
 "
 
 # Upload the new pipeline and add it to the current build
