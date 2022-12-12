@@ -14,6 +14,7 @@ set -euo pipefail
 SEMANTIC_VERSION=$1
 
 BLUE='\033[0;34m'
+GREEN='\032[0;34m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}Release with $SEMANTIC_VERSION version${NC}"
@@ -24,6 +25,14 @@ yarn renderer build
 
 yarn npm whoami
 
-yarn renderer version $SEMANTIC_VERSION 
+yarn renderer version $SEMANTIC_VERSION
 
 yarn renderer npm publish --access public
+
+echo -e "${GREEN}Successfully publish @webpack-prerender/renderer ✅${NC}"
+
+echo -e "${BLUE}Pushing updates to git...${NC}"
+
+git add . && \
+git commit -m "Release @webpack-prerender/renderer with $SEMANTIC_VERSION" && \
+git push -u origin HEAD
