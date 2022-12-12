@@ -34,7 +34,7 @@ yarn npm whoami
 
 yarn renderer version $SEMANTIC_VERSION
 
-# yarn renderer npm publish --access public
+yarn renderer npm publish --access public
 
 RELEASE_VERSION=$(jq ".version" ./packages/renderer/package.json)
 
@@ -42,6 +42,6 @@ echo -e "${GREEN}Successfully publish @webpack-prerender/renderer to version $RE
 
 echo -e "${BLUE}Pushing updates to git...${NC}"
 
-git add packages/* \
+git add packages/* && \
   && git commit -m "Release @webpack-prerender/renderer to $RELEASE_VERSION" && \
   && git push -u origin HEAD
