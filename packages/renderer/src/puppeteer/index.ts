@@ -1,1 +1,1 @@
-export * from './PuppeteerRenderer'
+export * from './PuppeteerRenderer';

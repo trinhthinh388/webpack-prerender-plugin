@@ -6,7 +6,7 @@ steps:
           login: true
           account_ids: '014222686667'
           region: 'ap-southeast-1'
-      - docker-compose#v3.9.0:
+      - docker-compose#v4.7.0:
           build: plugin
           image-name: webpack-prerender-plugin
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
@@ -17,12 +17,37 @@ steps:
 
   - label: ':jest: :puppeteer: Unit tests for Puppeteer renderer'
     command: ./scripts/test.sh
+    key: puppeteer-renderer-unit-test
     plugins:
       - ecr#v2.7.0:
           login: true
           account_ids: '014222686667'
           region: 'ap-southeast-1'
-      - docker-compose#v3.9.0:
+      - docker-compose#v4.7.0:
           run: plugin
           cache-from: plugin:014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource:latest
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
+
+  - block: 'Release @webpack-prerender-plugin/puppeteer-renderer :rocket:'
+    branches: master
+    key: puppeteer-release
+    depends_on: puppeteer-renderer-unit-test
+    fields:
+      - select: 'Version'
+        key: semantic-version
+        default: prerelease
+        options:
+          - label: prerelease
+            value: prerelease
+          - label: patch
+            value: patch
+          - label: minor
+            value: minor
+          - label: major
+            value: major
+
+  - label: ':construction_worker: Preparing release environment'
+    branches: master
+    command: make prepare
+    depends_on: puppeteer-release
+    key: prepare-puppeteer-release
