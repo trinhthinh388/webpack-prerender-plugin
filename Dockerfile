@@ -10,7 +10,8 @@ RUN apk update && apk add --no-cache --virtual \
     bash \
     xvfb \
     make \
-    git
+    git \
+    jq
 
 ENV DISPLAY :99
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
