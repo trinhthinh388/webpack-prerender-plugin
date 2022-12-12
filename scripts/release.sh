@@ -21,19 +21,25 @@ echo -e "${BLUE}Release with $SEMANTIC_VERSION version${NC}"
 
 echo -e "${BLUE}Packaging build files...${NC}"
 
-yarn renderer build
+# yarn renderer build
 
-yarn npm whoami
+# yarn npm whoami
 
-yarn renderer version $SEMANTIC_VERSION
+# yarn renderer version $SEMANTIC_VERSION
 
-yarn renderer npm publish --access public
+# yarn renderer npm publish --access public
 
 echo -e "${GREEN}Successfully publish @webpack-prerender/renderer ✅${NC}"
 
 echo -e "${BLUE}Pushing updates to git...${NC}"
 
 git remote set-url origin https://trinhthinh388:${GITHUB_ACCESS_TOKEN}@github.com/trinhthinh388/webpack-prerender-plugin.git
-git add . && \
-git commit -m "Release @webpack-prerender/renderer with $SEMANTIC_VERSION" && \
-git push -u origin HEAD
+
+git status
+
+git branch
+
+
+# git add . && \
+# git commit -m "Release @webpack-prerender/renderer with $SEMANTIC_VERSION" && \
+# git push -u origin HEAD
