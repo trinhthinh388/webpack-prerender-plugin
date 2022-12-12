@@ -24,6 +24,8 @@ git config --global user.email "thinh.trinh.portfolio@gmai.com" \
  && git checkout $BUILDKITE_BRANCH \
  && git pull
 
+STABLE_VERSION=$(jq ".version" ./packages/renderer/package.json)
+
 echo -e "${BLUE}Release with $SEMANTIC_VERSION version${NC}"
 
 echo -e "${BLUE}Packaging build files...${NC}"
@@ -38,7 +40,7 @@ yarn renderer npm publish --access public
 
 RELEASE_VERSION=$(jq ".version" ./packages/renderer/package.json)
 
-echo -e "${GREEN}Successfully publish @webpack-prerender/renderer to version $RELEASE_VERSION✅${NC}"
+echo -e "${GREEN}Successfully publish @webpack-prerender/renderer from v$STABLE_VERSION to v$RELEASE_VERSION✅${NC}"
 
 echo -e "${BLUE}Pushing updates to git...${NC}"
 
