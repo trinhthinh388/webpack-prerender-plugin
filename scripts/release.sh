@@ -42,12 +42,6 @@ echo -e "${GREEN}Successfully publish @webpack-prerender/renderer to version $RE
 
 echo -e "${BLUE}Pushing updates to git...${NC}"
 
-
-git add packages/*
-
-echo $RELEASE_VERSION
-
-
-# git add . && \
-# git commit -m "Release @webpack-prerender/renderer with $SEMANTIC_VERSION" && \
-# git push -u origin HEAD
+git add packages/* \
+  && git commit -m "Release @webpack-prerender/renderer to $RELEASE_VERSION" && \
+  && git push -u origin HEAD
