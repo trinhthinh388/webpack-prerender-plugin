@@ -19,6 +19,7 @@ PIPELINE="steps:
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
           env:
             - NPM_AUTH_TOKEN
+            - GITHUB_ACCESS_TOKEN
 "
 
 # Upload the new pipeline and add it to the current build
