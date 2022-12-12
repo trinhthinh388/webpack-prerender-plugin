@@ -28,4 +28,4 @@ cd packages/renderer
 
 npm version --no-git $SEMANTIC_VERSION 
 
-yarn renderer npm publish --access public
+yarn npm publish --access public
