@@ -42,6 +42,10 @@ echo -e "${BLUE}Pushing updates to git...${NC}"
 
 git status
 
+git add pacakges/*
+
+git status
+
 
 # git add . && \
 # git commit -m "Release @webpack-prerender/renderer with $SEMANTIC_VERSION" && \
