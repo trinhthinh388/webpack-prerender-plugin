@@ -24,8 +24,8 @@ yarn renderer build
 
 yarn npm whoami
 
-cd ./packages/renderer
+cd packages/renderer
 
-yarn version $SEMANTIC_VERSION 
+npm version --no-git $SEMANTIC_VERSION 
 
-yarn npm publish --access public
+yarn renderer npm publish --access public
