@@ -24,7 +24,7 @@ git config --global user.email "thinh.trinh.portfolio@gmai.com" \
  && git checkout $BUILDKITE_BRANCH \
  && git pull
 
-STABLE_VERSION=$(jq ".version" ./packages/renderer/package.json)
+STABLE_VERSION=$(jq -r ".version" ./packages/renderer/package.json)
 
 echo -e "${BLUE}Release with $SEMANTIC_VERSION version${NC}"
 
@@ -36,7 +36,7 @@ yarn npm whoami
 
 yarn renderer version $SEMANTIC_VERSION
 
-RELEASE_VERSION=$(jq ".version" ./packages/renderer/package.json)
+RELEASE_VERSION=$(jq -r ".version" ./packages/renderer/package.json)
 
 echo -e "${BLUE}Publishing @webpack-prerender/renderer from v$STABLE_VERSION to v$RELEASE_VERSION✅${NC}"
 
