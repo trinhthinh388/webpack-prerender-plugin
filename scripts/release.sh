@@ -17,6 +17,13 @@ BLUE='\033[0;34m'
 GREEN='\032[0;34m'
 NC='\033[0m' # No Color
 
+git config --global user.email "thinh.trinh.portfolio@gmai.com" \
+ && git config --global user.name "Buildkite CI" \
+ && git remote set-url origin https://trinhthinh388:${GITHUB_ACCESS_TOKEN}@github.com/trinhthinh388/webpack-prerender-plugin.git \
+ && git reset --hard \
+ && git checkout $BUILDKITE_BRANCH \
+ && git fetch
+
 echo -e "${BLUE}Release with $SEMANTIC_VERSION version${NC}"
 
 echo -e "${BLUE}Packaging build files...${NC}"
@@ -33,18 +40,7 @@ echo -e "${GREEN}Successfully publish @webpack-prerender/renderer ✅${NC}"
 
 echo -e "${BLUE}Pushing updates to git...${NC}"
 
-git config --global user.email "thinh.trinh.portfolio@gmai.com"
-git config --global user.name "Buildkite CI"
-
-git remote set-url origin https://trinhthinh388:${GITHUB_ACCESS_TOKEN}@github.com/trinhthinh388/webpack-prerender-plugin.git
-
 git status
-
-git reset --hard
-
-git checkout $BUILDKITE_BRANCH
-
-git fetch
 
 
 # git add . && \
