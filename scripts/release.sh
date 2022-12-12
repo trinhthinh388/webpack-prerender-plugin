@@ -22,7 +22,7 @@ git config --global user.email "thinh.trinh.portfolio@gmai.com" \
  && git remote set-url origin https://trinhthinh388:${GITHUB_ACCESS_TOKEN}@github.com/trinhthinh388/webpack-prerender-plugin.git \
  && git reset --hard \
  && git checkout $BUILDKITE_BRANCH \
- && git fetch
+ && git pull
 
 echo -e "${BLUE}Release with $SEMANTIC_VERSION version${NC}"
 
@@ -36,7 +36,7 @@ yarn renderer version $SEMANTIC_VERSION
 
 # yarn renderer npm publish --access public
 
-$RELEASE_VERSION=$(jq "version" ./packages/renderer/package.json)
+RELEASE_VERSION=$(jq "version" ./packages/renderer/package.json)
 
 echo -e "${GREEN}Successfully publish @webpack-prerender/renderer to version $RELEASE_VERSION✅${NC}"
 
