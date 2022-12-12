@@ -36,9 +36,11 @@ yarn npm whoami
 
 yarn renderer version $SEMANTIC_VERSION
 
-yarn renderer npm publish --access public
-
 RELEASE_VERSION=$(jq ".version" ./packages/renderer/package.json)
+
+echo -e "${BLUE}Publishing @webpack-prerender/renderer from v$STABLE_VERSION to v$RELEASE_VERSION✅${NC}"
+
+yarn renderer npm publish --access public
 
 echo -e "${GREEN}Successfully publish @webpack-prerender/renderer from v$STABLE_VERSION to v$RELEASE_VERSION✅${NC}"
 
