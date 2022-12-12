@@ -42,7 +42,7 @@ echo -e "${BLUE}Pushing updates to git...${NC}"
 
 git status
 
-git add pacakges/*
+git add packages/*
 
 git status
 
