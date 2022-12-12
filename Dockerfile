@@ -30,7 +30,4 @@ COPY --chown=chrome:chrome . /home/chrome/
 
 RUN yarn install
 
-RUN git config --global user.email "thinh.trinh.portfolio@gmai.com"\
-    &&  git config --global user.name "Buildkite CI"
-
 ENTRYPOINT ["/home/chrome/scripts/entrypoint.sh"]
