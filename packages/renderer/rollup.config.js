@@ -4,9 +4,9 @@ const esbuild = require('rollup-plugin-esbuild').default
 const name = require('./package.json').main.replace(/\.js$/, '')
 
 const bundle = config => ({
-  ...config,
-  input: 'src/index.ts',
+  input: 'dist/index.js',
   external: id => !/^[./]/.test(id),
+  ...config,
 })
 
 module.exports = [
@@ -27,6 +27,7 @@ module.exports = [
   }),
   bundle({
     plugins: [dts()],
+    input: `src/index.ts`,
     output: {
       file: `dist/${name}.d.ts`,
       format: 'es',

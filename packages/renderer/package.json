@@ -3,9 +3,9 @@
   "version": "0.0.1-7",
   "description": "Renderer for webpack prerender plugin",
   "repository": "git@github.com:trinhthinh388/webpack-prerender-plugin.git",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "typings": "dist/index.d.ts",
+  "main": "index.js",
+  "module": "index.mjs",
+  "typings": "index.d.ts",
   "author": "Thinh Trinh",
   "license": "MIT",
   "files": [
@@ -13,7 +13,8 @@
   ],
   "scripts": {
     "test": "jest --collect-coverage",
-    "build": "rollup -c"
+    "clean": "rimraf dist",
+    "build": "yarn clean && tsc && rollup -c"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
