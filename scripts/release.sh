@@ -40,11 +40,16 @@ RELEASE_VERSION=$(jq -r ".version" ./packages/renderer/package.json)
 
 echo -e "${BLUE}Publishing @webpack-prerender/renderer from v$STABLE_VERSION to v$RELEASE_VERSION ✅${NC}"
 
-yarn renderer npm publish --access public
+# yarn renderer npm publish --access public
 
 echo -e "${GREEN}Successfully publish @webpack-prerender/renderer from v$STABLE_VERSION to v$RELEASE_VERSION ✅${NC}"
 
 echo -e "${BLUE}Pushing updates to git...${NC}"
+
+echo -e "${BLUE}Cleaning repo before push...${NC}"
+# Remove `stableVersion` before relreasing, as it's buggy.
+# https://github.com/yarnpkg/berry/issues/3868
+echo "$(jq 'del(.stableVersion)' ./packages/renderer/package.json)" > ./packages/renderer/package.json
 
 git add packages/* \
   && git commit -m "Release @webpack-prerender/renderer to $RELEASE_VERSION" \

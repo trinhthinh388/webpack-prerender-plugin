@@ -1,15 +1,15 @@
 {
   "name": "@webpack-prerender/renderer",
-  "version": "0.0.1-7",
+  "version": "0.0.1-9",
   "description": "Renderer for webpack prerender plugin",
   "repository": "git@github.com:trinhthinh388/webpack-prerender-plugin.git",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "typings": "dist/index.d.ts",
+  "main": "index.js",
+  "module": "index.mjs",
+  "typings": "index.d.ts",
   "author": "Thinh Trinh",
   "license": "MIT",
   "files": [
-    "dist/*"
+    "*"
   ],
   "scripts": {
     "test": "jest --collect-coverage",
@@ -31,6 +31,5 @@
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.3"
-  },
-  "stableVersion": "0.0.1-6"
+  }
 }
