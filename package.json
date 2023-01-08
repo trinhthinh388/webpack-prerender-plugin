@@ -7,6 +7,7 @@
   "scripts": {
     "renderer": "yarn workspace @webpack-prerender/renderer",
     "webpack-plugin": "yarn workspace @webpack-prerender/plugin",
+    "server": "yarn workspace @webpack-prerender/renderer-server",
     "example": "yarn workspace example-app"
   },
   "files": [],
