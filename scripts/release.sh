@@ -34,6 +34,9 @@ yarn renderer build
 
 yarn npm whoami
 
+echo -e "${BLUE}Packing files..."
+yarn renderer pack --dry-run
+
 yarn renderer version $SEMANTIC_VERSION
 
 RELEASE_VERSION=$(jq -r ".version" ./packages/renderer/package.json)
@@ -52,5 +55,5 @@ echo -e "${BLUE}Cleaning repo before push...${NC}"
 echo "$(jq 'del(.stableVersion)' ./packages/renderer/package.json)" > ./packages/renderer/package.json
 
 git add packages/* \
-  && git commit -m "Release @webpack-prerender/renderer to $RELEASE_VERSION" \
+  && git commit -m "Release @webpack-prerender/renderer to $RELEASE_VERSION [skip ci]" \
   && git push -u origin HEAD
