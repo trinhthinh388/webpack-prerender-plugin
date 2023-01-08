@@ -34,7 +34,7 @@ yarn renderer build
 
 yarn npm whoami
 
-ls -al
+cd packages/renderer/dist
 
 echo -e "${BLUE}Packing files..."
 yarn pack --dry-run
