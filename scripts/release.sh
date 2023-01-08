@@ -34,10 +34,12 @@ yarn renderer build
 
 yarn npm whoami
 
-echo -e "${BLUE}Packing files..."
-yarn renderer pack --dry-run
+cd ./packages/renderer/dist
 
-yarn renderer version $SEMANTIC_VERSION
+echo -e "${BLUE}Packing files..."
+yarn pack --dry-run
+
+yarn version $SEMANTIC_VERSION
 
 RELEASE_VERSION=$(jq -r ".version" ./packages/renderer/package.json)
 

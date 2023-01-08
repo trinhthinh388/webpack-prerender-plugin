@@ -9,11 +9,13 @@
   "author": "Thinh Trinh",
   "license": "MIT",
   "files": [
-    "*"
+    "/dist"
   ],
   "scripts": {
     "test": "jest --collect-coverage",
-    "build": "rollup -c"
+    "clean": "rimraf dist",
+    "build": "rollup -c",
+    "prepack": "shx cp package.json dist"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
