@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const dts = require('rollup-plugin-dts').default
-const copy = require('rollup-plugin-copy')
-const esbuild = require('rollup-plugin-esbuild').default
+const esBuild = require('rollup-plugin-esbuild').default
 const name = require('./package.json').main.replace(/\.js$/, '')
 
 const bundle = config => ({
@@ -12,21 +11,15 @@ const bundle = config => ({
 
 module.exports = [
   bundle({
-    plugins: [esbuild(), copy({
-      targets: [
-        {
-          src: 'package.json', dest: 'dist'
-        }
-      ]
-    })],
+    plugins: [esBuild()],
     output: [
       {
-        file: `dist/${name}.js`,
+        file: `${name}.js`,
         format: 'cjs',
         sourcemap: true,
       },
       {
-        file: `dist/${name}.mjs`,
+        file: `${name}.mjs`,
         format: 'es',
         sourcemap: true,
       },
@@ -35,7 +28,7 @@ module.exports = [
   bundle({
     plugins: [dts()],
     output: {
-      file: `dist/${name}.d.ts`,
+      file: `${name}.d.ts`,
       format: 'es',
     },
   }),

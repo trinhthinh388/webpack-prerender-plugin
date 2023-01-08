@@ -3,9 +3,9 @@
   "version": "0.0.1-11",
   "description": "Renderer for webpack prerender plugin",
   "repository": "git@github.com:trinhthinh388/webpack-prerender-plugin.git",
-  "main": "index.js",
-  "module": "index.mjs",
-  "typings": "index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "typings": "dist/index.d.ts",
   "author": "Thinh Trinh",
   "license": "MIT",
   "files": [

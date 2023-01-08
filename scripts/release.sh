@@ -34,12 +34,10 @@ yarn renderer build
 
 yarn npm whoami
 
-cd /home/chrome/packages/renderer/dist
-
 echo -e "${BLUE}Packing files..."
-yarn pack --dry-run
+yarn renderer pack --dry-run
 
-yarn version $SEMANTIC_VERSION
+yarn renderer version $SEMANTIC_VERSION
 
 RELEASE_VERSION=$(jq -r ".version" ./packages/renderer/package.json)
 
