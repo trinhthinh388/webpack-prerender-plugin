@@ -14,8 +14,7 @@
   "scripts": {
     "test": "jest --collect-coverage",
     "clean": "rimraf dist",
-    "build": "rollup -c",
-    "prepack": "shx cp package.json dist"
+    "build": "rollup -c"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
