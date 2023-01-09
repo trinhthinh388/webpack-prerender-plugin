@@ -15,7 +15,8 @@
     "g:build-w": "yarn workspaces foreach -piv --no-private run p:build-w",
     "p:build": "cd $INIT_CWD && yarn p:rollup",
     "p:build-w": "cd $INIT_CWD && yarn p:rollup -w",
-    "p:rollup": "cd $INIT_CWD && rollup -c=${PROJECT_CWD}/config/rollup.config.js"
+    "p:rollup": "cd $INIT_CWD && rollup -c=${PROJECT_CWD}/config/rollup.config.js",
+    "p:version": "cd $INIT_CWD && yarn version"
   },
   "files": [],
   "keywords": [
