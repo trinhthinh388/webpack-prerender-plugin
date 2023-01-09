@@ -4,11 +4,18 @@
   "description": "Flexible, framework-agnostic static site generation for sites and SPAs built with webpack.",
   "license": "MIT",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "renderer": "yarn workspace @webpack-prerender/renderer",
     "webpack-plugin": "yarn workspace @webpack-prerender/plugin",
     "server": "yarn workspace @webpack-prerender/renderer-server",
-    "example": "yarn workspace example-app"
+    "example": "yarn workspace example-app",
+    "dev": "yarn g:build-w",
+    "g:build": "yarn workspaces foreach -ptv --no-private run p:build",
+    "g:build-w": "yarn workspaces foreach -piv --no-private run p:build-w",
+    "p:build": "cd $INIT_CWD && yarn p:rollup",
+    "p:build-w": "cd $INIT_CWD && yarn p:rollup -w",
+    "p:rollup": "cd $INIT_CWD && rollup -c=${PROJECT_CWD}/config/rollup.config.js"
   },
   "files": [],
   "keywords": [

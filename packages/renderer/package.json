@@ -8,6 +8,7 @@
   "typings": "dist/index.d.ts",
   "author": "Thinh Trinh",
   "license": "MIT",
+  "private": false,
   "files": [
     "/dist"
   ],
