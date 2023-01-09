@@ -45,10 +45,11 @@ echo -e "${BLUE}Cleaning repo before push...${NC}"
 # https://github.com/yarnpkg/berry/issues/3868
 yarn workspaces foreach -ptv --no-private run p:goto && echo "$(jq 'del(.stableVersion)' ./package.json)" > ./package.json
 
-ls -al
-
 echo -e "${BLUE}Pushing updates to git...${NC}"
-git status \
-  && git add . \
-  && git commit -m "Release @webpack-prerender-plugin [skip ci]" \
-  && git push -u origin HEAD
+git config --global user.email "thinh.trinh.portfolio@gmail.com" \
+ && git config --global user.name "Buildkite CI" \
+ && git remote set-url origin https://trinhthinh388:${GITHUB_ACCESS_TOKEN}@github.com/trinhthinh388/webpack-prerender-plugin.git \
+ && git status \
+ && git add . \
+ && git commit -m "Release @webpack-prerender-plugin [skip ci]" \
+ && git push -u origin HEAD
