@@ -16,7 +16,8 @@
     "p:build": "cd $INIT_CWD && yarn p:rollup",
     "p:build-w": "cd $INIT_CWD && yarn p:rollup -w",
     "p:rollup": "cd $INIT_CWD && rollup -c=${PROJECT_CWD}/config/rollup.config.js",
-    "p:version": "cd $INIT_CWD && yarn version"
+    "p:version": "cd $INIT_CWD && yarn version",
+    "p:publish": "cd $INIT_CWD && yarn npm publish "
   },
   "files": [],
   "keywords": [

@@ -1,12 +1,11 @@
 {
   "name": "@webpack-prerender/renderer-server",
-  "version": "0.0.0",
+  "version": "0.0.1-0",
   "description": "Renderer server for webpack prerender plugin",
   "repository": "git@github.com:trinhthinh388/webpack-prerender-plugin.git",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
-  "private": false,
   "author": "Thinh Trinh",
   "license": "MIT",
   "files": [
@@ -31,5 +30,6 @@
     "express": "^4.18.2",
     "lodash": "^4.17.21",
     "portfinder": "^1.0.32"
-  }
+  },
+  "stableVersion": "0.0.0"
 }
