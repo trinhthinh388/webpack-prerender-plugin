@@ -17,7 +17,7 @@ BLUE='\033[0;34m'
 GREEN='\032[0;34m'
 NC='\033[0m' # No Color
 
-git config --global user.email "thinh.trinh.portfolio@gmai.com" \
+git config --global user.email "thinh.trinh.portfolio@gmail.com" \
  && git config --global user.name "Buildkite CI" \
  && git remote set-url origin https://trinhthinh388:${GITHUB_ACCESS_TOKEN}@github.com/trinhthinh388/webpack-prerender-plugin.git \
  && git reset --hard \
@@ -44,6 +44,8 @@ echo -e "${BLUE}Cleaning repo before push...${NC}"
 # Remove `stableVersion` before relreasing, as it's buggy.
 # https://github.com/yarnpkg/berry/issues/3868
 yarn workspaces foreach -ptv --no-private run p:goto && echo "$(jq 'del(.stableVersion)' ./package.json)" > ./package.json
+
+ls -al
 
 echo -e "${BLUE}Pushing updates to git...${NC}"
 git status \

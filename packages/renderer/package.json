@@ -1,6 +1,6 @@
 {
   "name": "@webpack-prerender/renderer",
-  "version": "0.0.1-18",
+  "version": "0.0.1-19",
   "description": "Renderer for webpack prerender plugin",
   "repository": "git@github.com:trinhthinh388/webpack-prerender-plugin.git",
   "main": "dist/index.js",
@@ -17,7 +17,7 @@
     "build": "rollup -c"
   },
   "dependencies": {
-    "@webpack-prerender/renderer-server": "0.0.1-5",
+    "@webpack-prerender/renderer-server": "0.0.1-6",
     "cheerio": "^1.0.0-rc.12",
     "css-tree": "^2.3.0",
     "lodash": "^4.17.21",
