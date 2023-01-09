@@ -21,6 +21,7 @@ git config --global user.email "thinh.trinh.portfolio@gmai.com" \
  && git config --global user.name "Buildkite CI" \
  && git remote set-url origin https://trinhthinh388:${GITHUB_ACCESS_TOKEN}@github.com/trinhthinh388/webpack-prerender-plugin.git \
  && git reset --hard \
+ && git clean -fd \
  && git checkout $BUILDKITE_BRANCH \
  && git pull
 
@@ -42,9 +43,9 @@ yarn workspaces foreach -ptv --no-private run p:publish --access public
 echo -e "${BLUE}Cleaning repo before push...${NC}"
 # Remove `stableVersion` before relreasing, as it's buggy.
 # https://github.com/yarnpkg/berry/issues/3868
-yarn workspaces foreach -ptv --no-private run p:goto && echo '$(jq 'del(.stableVersion)' ./package.json)' > ./package.json
+yarn workspaces foreach -ptv --no-private run p:goto && echo "$(jq 'del(.stableVersion)' ./package.json)" > ./package.json
 
 echo -e "${BLUE}Pushing updates to git...${NC}"
-git add packages/* \
+git add * \
   && git commit -m "Release @webpack-prerender/renderer to $RELEASE_VERSION [skip ci]" \
   && git push -u origin HEAD
