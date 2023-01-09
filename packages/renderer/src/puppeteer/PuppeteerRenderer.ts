@@ -1,26 +1,36 @@
 import puppeteer, { Browser, HTTPRequest, HTTPResponse, Page } from 'puppeteer';
 import { CSSOptimizer } from '../CSSOptimizer';
 import { RenderError, PuppeteerRendererOptions } from '../misc';
+import { RendererServer } from '@webpack-prerender/renderer-server';
+import isUndefined from 'lodash/isUndefined';
+import omitBy from 'lodash/omitBy';
 
 type RendererPlugins = typeof CSSOptimizer;
 
 export const defaultOptions: PuppeteerRendererOptions = {
-  maxConcurrentRoutes: 0,
   port: 3000,
+  maxConcurrentRoutes: 0,
   skipThirdPartyRequests: false,
   inlineCSS: false,
   ignoreErrorRequest: true,
 };
+
 export class PuppeteerRenderer {
   private _options: PuppeteerRendererOptions = {};
   private _browser: Browser | null = null;
   private _plugins: RendererPlugins[] = [];
   private _resources: HTTPResponse[] = [];
   private _requests: Set<string>;
+  private _server: RendererServer;
 
   constructor(opts: PuppeteerRendererOptions = {}) {
-    this._options = { ...defaultOptions, ...opts };
+    this._options = { ...defaultOptions, ...omitBy(opts, isUndefined) };
     this._requests = new Set();
+    this._server = new RendererServer({
+      port: this._options.port,
+      staticDir: this._options.staticDir,
+      indexPath: this._options.indexPath,
+    });
 
     if (this._options.inlineCSS) this._plugins.push(CSSOptimizer);
 
@@ -32,7 +42,14 @@ export class PuppeteerRenderer {
 
   async launch() {
     try {
+      const workingPort = await this._server.initialize();
+      if (workingPort !== this._options.port) {
+        console.log(
+          `Port ${this._options.port} is currently in-use, use port ${workingPort} instead.`
+        );
+      }
       this._browser = await puppeteer.launch(this._options);
+      this._options.port = workingPort;
     } catch (err) {
       console.error('Cannot launch Puppeteer instance.');
       console.error(err);
@@ -106,9 +123,6 @@ export class PuppeteerRenderer {
   private interceptResponse(response: HTTPResponse) {
     this._resources.push(response);
     this._requests.delete(response.request().url());
-    if (this._requests.size === 0) {
-      console.log('Fulfilled!');
-    }
   }
 
   private async optimize(_html: string, _response: HTTPResponse, _page: Page) {
@@ -127,7 +141,6 @@ export class PuppeteerRenderer {
 
     const onFinished = (req: HTTPRequest) => this._requests.add(req.url());
     const onFailed = (req: HTTPRequest) => {
-      console.log(req.url());
       return this._requests.delete(req.url());
     };
 
@@ -159,7 +172,8 @@ export class PuppeteerRenderer {
     };
   }
 
-  destroy() {
+  async destroy() {
+    await this._server.destroy();
     if (this._browser) {
       try {
         this._browser.close();
