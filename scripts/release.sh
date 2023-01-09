@@ -42,7 +42,7 @@ yarn workspaces foreach -ptv --no-private run p:publish --access public
 echo -e "${BLUE}Cleaning repo before push...${NC}"
 # Remove `stableVersion` before relreasing, as it's buggy.
 # https://github.com/yarnpkg/berry/issues/3868
-yarn workspaces foreach -ptv --no-private run echo "$(jq 'del(.stableVersion)' ./package.json)" > ./package.json
+yarn workspaces foreach -ptv --no-private run cd $INIT_CWD && echo "$(jq 'del(.stableVersion)' ./package.json)" > ./package.json
 
 echo -e "${BLUE}Pushing updates to git...${NC}"
 git add packages/* \

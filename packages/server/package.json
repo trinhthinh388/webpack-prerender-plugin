@@ -30,6 +30,5 @@
     "express": "^4.18.2",
     "lodash": "^4.17.21",
     "portfinder": "^1.0.32"
-  },
-  "stableVersion": "0.0.0"
+  }
 }
