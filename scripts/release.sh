@@ -46,7 +46,7 @@ echo -e "${BLUE}Cleaning repo before push...${NC}"
 yarn workspaces foreach -ptv --no-private run p:goto && echo "$(jq 'del(.stableVersion)' ./package.json)" > ./package.json
 
 echo -e "${BLUE}Pushing updates to git...${NC}"
-git status
-git add packages/* \
+git status \
+  && git add . \
   && git commit -m "Release @webpack-prerender/renderer to $RELEASE_VERSION [skip ci]" \
   && git push -u origin HEAD
