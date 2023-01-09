@@ -48,5 +48,5 @@ yarn workspaces foreach -ptv --no-private run p:goto && echo "$(jq 'del(.stableV
 echo -e "${BLUE}Pushing updates to git...${NC}"
 git status \
   && git add . \
-  && git commit -m "Release @webpack-prerender/renderer to $RELEASE_VERSION [skip ci]" \
+  && git commit -m "Release @webpack-prerender-plugin [skip ci]" \
   && git push -u origin HEAD
