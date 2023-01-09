@@ -4,14 +4,17 @@ import type {
   WaitForOptions,
   Page,
 } from 'puppeteer';
+import type { RendererServerOpts } from '@webpack-prerender/renderer-server';
 
-export interface PuppeteerRendererOptions extends PuppeteerLaunchOptions {
+export interface PuppeteerRendererOptions
+  extends PuppeteerLaunchOptions,
+    RendererServerOpts {
   maxConcurrentRoutes?: number;
-  port?: number;
   skipThirdPartyRequests?: boolean;
   navigationOptions?: WaitForOptions & { referer?: string };
   renderAfterElementExists?: string;
   inlineCSS?: boolean;
+  port?: number;
   ignoreErrorRequest?: boolean;
 }
 

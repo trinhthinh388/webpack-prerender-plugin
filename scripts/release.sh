@@ -28,32 +28,23 @@ STABLE_VERSION=$(jq -r ".version" ./packages/renderer/package.json)
 
 echo -e "${BLUE}Release with $SEMANTIC_VERSION version${NC}"
 
-echo -e "${BLUE}Packaging build files...${NC}"
-
-yarn renderer build
+echo -e "${BLUE}Building static assets...${NC}"
+yarn g:build
 
 yarn npm whoami
 
-echo -e "${BLUE}Packing files..."
-yarn renderer pack --dry-run
+echo -e "${BLUE}Bumping packges version...${NC}"
+yarn workspaces foreach -ptv --no-private run p:version $SEMANTIC_VERSION
 
-yarn renderer version $SEMANTIC_VERSION
-
-RELEASE_VERSION=$(jq -r ".version" ./packages/renderer/package.json)
-
-echo -e "${BLUE}Publishing @webpack-prerender/renderer from v$STABLE_VERSION to v$RELEASE_VERSION ✅${NC}"
-
-yarn renderer npm publish --access public
-
-echo -e "${GREEN}Successfully publish @webpack-prerender/renderer from v$STABLE_VERSION to v$RELEASE_VERSION ✅${NC}"
-
-echo -e "${BLUE}Pushing updates to git...${NC}"
+echo -e "${BLUE}Publishing packges...${NC}"
+yarn workspaces foreach -ptv --no-private run p:publish --access public
 
 echo -e "${BLUE}Cleaning repo before push...${NC}"
 # Remove `stableVersion` before relreasing, as it's buggy.
 # https://github.com/yarnpkg/berry/issues/3868
-echo "$(jq 'del(.stableVersion)' ./packages/renderer/package.json)" > ./packages/renderer/package.json
+yarn workspaces foreach -ptv --no-private run echo "$(jq 'del(.stableVersion)' ./package.json)" > ./package.json
 
+echo -e "${BLUE}Pushing updates to git...${NC}"
 git add packages/* \
   && git commit -m "Release @webpack-prerender/renderer to $RELEASE_VERSION [skip ci]" \
   && git push -u origin HEAD

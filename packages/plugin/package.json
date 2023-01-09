@@ -5,6 +5,7 @@
   "repository": "git@github.com:trinhthinh388/webpack-prerender-plugin.git",
   "main": "index.js",
   "author": "Thinh Trinh",
+  "private": true,
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.2.3",

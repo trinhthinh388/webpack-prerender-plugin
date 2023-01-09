@@ -12,7 +12,6 @@ const configs: Config = {
   transform: {
     '^.+\\.ts$': 'ts-jest',
   },
-  // testEnvironment: 'node',
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   clearMocks: true,
   coverageDirectory: 'coverage',

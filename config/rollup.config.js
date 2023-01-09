@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const dts = require('rollup-plugin-dts').default
-const esBuild = require('rollup-plugin-esbuild').default
-const name = require('./package.json').main.replace(/\.js$/, '')
+const esbuild = require('rollup-plugin-esbuild').default
+const path = require('path')
+
+const PACKAGE_ROOT_PATH = process.cwd();
+const PKG_JSON = require(path.resolve(PACKAGE_ROOT_PATH, 'package.json'))
+const NAME = PKG_JSON.main.replace(/\.js$/, '')
 
 const bundle = config => ({
   ...config,
@@ -11,15 +16,15 @@ const bundle = config => ({
 
 module.exports = [
   bundle({
-    plugins: [esBuild()],
+    plugins: [esbuild()],
     output: [
       {
-        file: `${name}.js`,
+        file: `${NAME}.js`,
         format: 'cjs',
         sourcemap: true,
       },
       {
-        file: `${name}.mjs`,
+        file: `${NAME}.mjs`,
         format: 'es',
         sourcemap: true,
       },
@@ -28,7 +33,7 @@ module.exports = [
   bundle({
     plugins: [dts()],
     output: {
-      file: `${name}.d.ts`,
+      file: `${NAME}.d.ts`,
       format: 'es',
     },
   }),

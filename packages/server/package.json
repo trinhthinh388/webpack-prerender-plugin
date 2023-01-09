@@ -1,7 +1,7 @@
 {
-  "name": "@webpack-prerender/renderer",
-  "version": "0.0.1-13",
-  "description": "Renderer for webpack prerender plugin",
+  "name": "@webpack-prerender/renderer-server",
+  "version": "0.0.1-0",
+  "description": "Renderer server for webpack prerender plugin",
   "repository": "git@github.com:trinhthinh388/webpack-prerender-plugin.git",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -16,24 +16,20 @@
     "clean": "rimraf dist",
     "build": "rollup -c"
   },
-  "dependencies": {
-    "@webpack-prerender/renderer-server": "0.0.1-0",
-    "cheerio": "^1.0.0-rc.12",
-    "css-tree": "^2.3.0",
-    "lodash": "^4.17.21",
-    "promise-limit": "^2.7.0",
-    "puppeteer": "19.3.0"
-  },
   "devDependencies": {
-    "@types/css-tree": "^2.0.0",
+    "@types/express": "^4.17.15",
     "@types/jest": "^29.2.3",
-    "@types/jest-environment-puppeteer": "^5.0.3",
     "@types/lodash": "^4.14.191",
     "@types/node": "^18.11.10",
     "jest": "^29.3.1",
-    "jest-puppeteer": "^6.1.1",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.3"
-  }
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "lodash": "^4.17.21",
+    "portfinder": "^1.0.32"
+  },
+  "stableVersion": "0.0.0"
 }

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { CSSOptimizer } from '../CSSOptimizer';
 import puppeteer, { Browser, HTTPResponse, Page } from 'puppeteer';
-import csstree from 'css-tree';
 
 describe('CSSOptimizer', () => {
   let page: Page;

@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { PuppeteerRenderer, defaultOptions } from '../PuppeteerRenderer';
+import { PuppeteerRenderer } from '../PuppeteerRenderer';
 import puppeteer, { Browser, HTTPRequest, Page } from 'puppeteer';
+import path from 'path';
+import { PuppeteerRendererOptions } from '../../misc';
+
+const STATIC_DIR = path.resolve(__dirname, '../../../../app/example');
 
 describe('PuppeteerRenderer', () => {
   let page: Page;
@@ -36,10 +40,9 @@ describe('PuppeteerRenderer', () => {
       args: ['--test'],
     });
     await renderer.launch();
-    expect(launch).toHaveBeenCalledWith({
-      ...defaultOptions,
-      args: ['--test'],
-    });
+    expect(
+      (launch.mock.lastCall?.[0] as PuppeteerRendererOptions).args
+    ).toEqual(['--test']);
   });
 
   it('Should throw an error when launching failed', async () => {
@@ -56,11 +59,35 @@ describe('PuppeteerRenderer', () => {
   });
 
   it('Should close browser when calling destroy', async () => {
-    const renderer = new PuppeteerRenderer();
+    const renderer = new PuppeteerRenderer({
+      staticDir: STATIC_DIR,
+    });
     const browser = await renderer.launch();
     const close = jest.spyOn(browser, 'close');
-    renderer.destroy();
+    await renderer.destroy();
     expect(close).toHaveBeenCalled();
+  });
+
+  it('Should log error when browser destroy failed', async () => {
+    const err = new Error('Test');
+    const renderer = new PuppeteerRenderer({
+      staticDir: STATIC_DIR,
+    });
+    console.error = jest.fn();
+    const browser = await renderer.launch();
+    const close = jest.spyOn(browser, 'close');
+    close.mockImplementation(() => {
+      throw err;
+    });
+    try {
+      await renderer.destroy();
+    } catch (_) {
+      expect(close).toHaveBeenCalled();
+      expect(console.error).toHaveBeenCalledTimes(2);
+      expect(
+        (console.error as unknown as jest.SpyInstance).mock.lastCall[0]
+      ).toBe(err);
+    }
   });
 
   it('Should throw error when calling destroy failed', async () => {
@@ -111,6 +138,7 @@ describe('PuppeteerRenderer', () => {
   it('should render after an element is exist', async () => {
     const renderer = new PuppeteerRenderer({
       renderAfterElementExists: '#root',
+      staticDir: STATIC_DIR,
     });
     const browser = await renderer.launch();
     const newPage = jest.spyOn(browser, 'newPage');
@@ -165,6 +193,7 @@ describe('PuppeteerRenderer', () => {
   it('Should start optimizing process', async () => {
     const renderer = new PuppeteerRenderer({
       inlineCSS: true,
+      staticDir: STATIC_DIR,
     });
 
     // @ts-ignore

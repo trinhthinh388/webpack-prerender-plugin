@@ -28,8 +28,8 @@ steps:
           cache-from: plugin:014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource:latest
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
 
-  - block: 'Release @webpack-prerender-plugin/puppeteer-renderer :rocket:'
-    branches: master
+  - block: 'Release :rocket:'
+    # branches: master
     key: puppeteer-release
     depends_on: puppeteer-renderer-unit-test
     fields:
@@ -47,7 +47,7 @@ steps:
             value: major
 
   - label: ':construction_worker: Preparing release environment'
-    branches: master
+    # branches: master
     command: make prepare
     depends_on: puppeteer-release
     key: prepare-puppeteer-release
