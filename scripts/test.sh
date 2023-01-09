@@ -20,8 +20,10 @@ echo "Excutable path: $PUPPETEER_EXECUTABLE_PATH"
 echo "Starting Test Enviroment"
 
 echo -e "${BLUE}-- Workspaces --${NC}"
-yarn Workspaces list
+yarn workspaces list
 
 echo -e "${BLUE}-- Build --${NC}"
-yarn g:
+yarn g:build
+
+echo -e "${BLUE}-- Test --${NC}"
 yarn renderer test --verbose --forceExit --runInBand
