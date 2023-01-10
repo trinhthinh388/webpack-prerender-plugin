@@ -29,7 +29,7 @@ steps:
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
 
   - block: 'Release :rocket:'
-    # branches: master
+    branches: master
     key: puppeteer-release
     depends_on: puppeteer-renderer-unit-test
     fields:
