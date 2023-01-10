@@ -12,7 +12,7 @@
     "/dist"
   ],
   "scripts": {
-    "test": "jest --collect-coverage",
+    "test": "jest --collect-coverage --verbose --forceExit",
     "clean": "rimraf dist",
     "build": "rollup -c"
   },
