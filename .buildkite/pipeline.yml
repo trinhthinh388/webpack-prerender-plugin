@@ -15,7 +15,7 @@ steps:
 
   - wait
 
-  - label: ':jest: :puppeteer: Unit tests for Puppeteer renderer'
+  - label: ':jest: :puppeteer: Unit tests'
     command: ./scripts/test.sh
     key: puppeteer-renderer-unit-test
     plugins:
@@ -29,7 +29,7 @@ steps:
           image-repository: 014222686667.dkr.ecr.ap-southeast-1.amazonaws.com/opensource
 
   - block: 'Release :rocket:'
-    # branches: master
+    branches: master
     key: puppeteer-release
     depends_on: puppeteer-renderer-unit-test
     fields:
@@ -47,7 +47,7 @@ steps:
             value: major
 
   - label: ':construction_worker: Preparing release environment'
-    # branches: master
+    branches: master
     command: make prepare
     depends_on: puppeteer-release
     key: prepare-puppeteer-release

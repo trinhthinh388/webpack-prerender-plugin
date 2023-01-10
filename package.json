@@ -18,7 +18,9 @@
     "p:rollup": "cd $INIT_CWD && rollup -c=${PROJECT_CWD}/config/rollup.config.js",
     "p:version": "cd $INIT_CWD && yarn version",
     "p:publish": "cd $INIT_CWD && yarn npm publish",
-    "p:goto": "cd $INIT_CWD"
+    "p:goto": "cd $INIT_CWD",
+    "g:test": "yarn workspaces foreach -ptv --no-private run p:test",
+    "p:test": "cd $INIT_CWD && yarn test"
   },
   "files": [],
   "keywords": [

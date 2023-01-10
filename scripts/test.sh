@@ -26,4 +26,4 @@ echo -e "${BLUE}-- Build --${NC}"
 yarn g:build
 
 echo -e "${BLUE}-- Test --${NC}"
-yarn renderer test --verbose --forceExit --runInBand
+yarn g:test
