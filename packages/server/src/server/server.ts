@@ -1,10 +1,11 @@
 import express from 'express';
 import { getPortPromise } from 'portfinder';
-import { Server } from 'http';
-import { Express } from 'express';
 import path from 'path';
 import omitBy from 'lodash/omitBy';
 import isUndefined from 'lodash/isUndefined';
+
+import type { Server } from 'http';
+import type { Express } from 'express';
 
 export type RendererServerOpts = {
   port?: number;
@@ -39,7 +40,7 @@ export class RendererServer {
       })
     );
 
-    this._app.get('*', (req, res) => {
+    this._app.get('*', (_, res) => {
       res.sendFile(path.join(this._options.staticDir, this._options.indexPath));
     });
 
