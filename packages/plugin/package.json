@@ -25,6 +25,6 @@
     "webpack": "^5.75.0"
   },
   "dependencies": {
-    "@webpack-prerender/renderer": "0.0.1-21"
+    "@webpack-prerender/renderer": "0.0.1-22"
   }
 }

@@ -17,7 +17,7 @@
     "build": "rollup -c"
   },
   "dependencies": {
-    "@webpack-prerender/renderer-server": "0.0.1-9",
+    "@webpack-prerender/renderer-server": "0.0.1-10",
     "chalk": "4.1.2",
     "cheerio": "^1.0.0-rc.12",
     "css-tree": "^2.3.0",
