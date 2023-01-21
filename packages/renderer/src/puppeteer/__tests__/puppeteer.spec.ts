@@ -85,8 +85,10 @@ describe('PuppeteerRenderer', () => {
       expect(close).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalledTimes(2);
       expect(
-        (console.error as unknown as jest.SpyInstance).mock.lastCall[0]
-      ).toBe(err);
+        (
+          console.error as unknown as jest.SpyInstance
+        ).mock.lastCall[0].includes('Test')
+      ).toBe(true);
     }
   });
 

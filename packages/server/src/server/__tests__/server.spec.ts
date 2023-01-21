@@ -1,5 +1,5 @@
 import path from 'path';
-import { RendererServer } from './server';
+import { RendererServer } from '../server';
 
 let mockCallbacks: any[] = [];
 const mockGet = jest.fn().mockImplementation((_, fn) => mockCallbacks.push(fn));
