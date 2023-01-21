@@ -1,6 +1,6 @@
 {
   "name": "@webpack-prerender/renderer",
-  "version": "0.0.1-22",
+  "version": "0.0.1-23",
   "description": "Renderer for webpack prerender plugin",
   "repository": "git@github.com:trinhthinh388/webpack-prerender-plugin.git",
   "main": "dist/index.js",
@@ -17,7 +17,7 @@
     "build": "rollup -c"
   },
   "dependencies": {
-    "@webpack-prerender/renderer-server": "0.0.1-10",
+    "@webpack-prerender/renderer-server": "0.0.1-11",
     "chalk": "4.1.2",
     "cheerio": "^1.0.0-rc.12",
     "css-tree": "^2.3.0",
@@ -36,5 +36,6 @@
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.3"
-  }
+  },
+  "stableVersion": "0.0.1-22"
 }

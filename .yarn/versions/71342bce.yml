@@ -1,0 +1,4 @@
+undecided:
+  - webpack-prerender-plugin
+  - "@webpack-prerender/renderer"
+  - "@webpack-prerender/renderer-server"
