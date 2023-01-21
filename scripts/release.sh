@@ -51,5 +51,6 @@ git config --global user.email "thinh.trinh.portfolio@gmail.com" \
  && git remote set-url origin https://trinhthinh388:${GITHUB_ACCESS_TOKEN}@github.com/trinhthinh388/webpack-prerender-plugin.git \
  && git status \
  && git add . \
+ && git status \
  && git commit -m "Release @webpack-prerender-plugin [skip ci]" \
  && git push -u origin HEAD

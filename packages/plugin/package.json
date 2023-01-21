@@ -1,6 +1,6 @@
 {
   "name": "@webpack-prerender/plugin",
-  "version": "0.0.0",
+  "version": "0.0.1-0",
   "description": "Webpack prerender plugin",
   "repository": "git@github.com:trinhthinh388/webpack-prerender-plugin.git",
   "main": "dist/index.js",
