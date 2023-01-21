@@ -4,10 +4,11 @@ import { RenderError, PuppeteerRendererOptions } from '../misc';
 import { RendererServer } from '@webpack-prerender/renderer-server';
 import isUndefined from 'lodash/isUndefined';
 import omitBy from 'lodash/omitBy';
+import chalk from 'chalk';
 
 type RendererPlugins = typeof CSSOptimizer;
 
-export const defaultOptions: PuppeteerRendererOptions = {
+export const DEFAULT_OPTS: PuppeteerRendererOptions = {
   port: 3000,
   maxConcurrentRoutes: 0,
   skipThirdPartyRequests: false,
@@ -24,7 +25,7 @@ export class PuppeteerRenderer {
   private _server: RendererServer;
 
   constructor(opts: PuppeteerRendererOptions = {}) {
-    this._options = { ...defaultOptions, ...omitBy(opts, isUndefined) };
+    this._options = { ...DEFAULT_OPTS, ...omitBy(opts, isUndefined) };
     this._requests = new Set();
     this._server = new RendererServer({
       port: this._options.port,
@@ -51,8 +52,8 @@ export class PuppeteerRenderer {
       this._browser = await puppeteer.launch(this._options);
       this._options.port = workingPort;
     } catch (err) {
-      console.error('Cannot launch Puppeteer instance.');
-      console.error(err);
+      console.error(chalk.red('Cannot launch Puppeteer instance.'));
+      console.error(chalk.red(err));
       throw err;
     }
 
@@ -100,8 +101,8 @@ export class PuppeteerRenderer {
 
       return result;
     } catch (err) {
-      console.error(`Unable to render route ${route}.`);
-      console.error(err);
+      console.error(chalk.red(`Unable to render route ${route}.`));
+      console.error(chalk.red(err));
       throw err;
     }
   }
@@ -178,8 +179,8 @@ export class PuppeteerRenderer {
       try {
         this._browser.close();
       } catch (err) {
-        console.error('Unable to close Puppeteer instance.');
-        console.error(err);
+        console.error(chalk.red('Unable to close Puppeteer instance.'));
+        console.error(chalk.red(err));
         throw err;
       }
     }

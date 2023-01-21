@@ -2,13 +2,15 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { PrerenderPlugin } = require('@webpack-prerender/plugin')
+const { ProgressPlugin } = require('webpack')
 
 const { NODE_ENV } = process.env;
 
 module.exports = {
   mode: NODE_ENV,
   output: {
-    path: path.join(__dirname, '/dist'),
+    path: path.join(__dirname, '../../dist'),
     filename: 'main.js',
   },
   devServer: {
@@ -34,9 +36,15 @@ module.exports = {
     ],
   },
   plugins: [
+    new ProgressPlugin(),
     new HtmlWebpackPlugin({
       template: 'src/index.html', // to import index.html file inside index.js
     }),
     new MiniCssExtractPlugin(),
+    new PrerenderPlugin({
+      staticDir: '../../dist',
+      outputDir: '../../dist/prerender/foo/bar',
+      routes: ['/', '/home']
+    })
   ],
 };
